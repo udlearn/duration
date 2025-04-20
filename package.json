@@ -1,0 +1,26 @@
+{
+  "name": "@udlearn/duration",
+  "version": "1.0.0-rc.1",
+  "description": "Interpret and format time durations in various units",
+  "repository": "github:udlearn/duration",
+  "keywords": ["format", "time", "duration"],
+  "author": "Ralph Florent",
+  "license": "MIT",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "start": "node example.js",
+    "format": "prettier --write '**/*.(j|t)s'",
+    "test": "node test.js"
+  },
+  "devDependencies": {
+    "prettier": "3.5.3"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 120,
+    "tabWidth": 2,
+    "useTabs": false
+  }
+}
