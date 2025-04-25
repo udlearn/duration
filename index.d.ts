@@ -157,11 +157,11 @@ declare class Duration {
   /** Compares the current duration to another duration. */
   compareTo(duration: Duration): number;
 
-  /** Returns a string representation of the duration. */
-  toString(): string;
-
   /** Returns a JSON representation of the duration. */
   toJson(): DurationValues;
+
+  /** Returns a string representation of the duration. */
+  toString(): string;
 }
 
 interface DurationValues {

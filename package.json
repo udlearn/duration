@@ -1,6 +1,6 @@
 {
   "name": "@udlearn/duration",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.3",
   "description": "Interpret and format time durations in various units",
   "repository": "github:udlearn/duration",
   "keywords": ["format", "time", "duration"],
@@ -8,6 +8,7 @@
   "license": "MIT",
   "main": "index.js",
   "types": "index.d.ts",
+  "files": ["index.js", "index.d.ts"],
   "scripts": {
     "start": "node example.js",
     "format": "prettier --write '**/*.(j|t)s'",

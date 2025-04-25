@@ -1,5 +1,5 @@
 class Duration {
-  _duration; // duration in milliseconds.
+  _duration; // time in milliseconds.
 
   static millisecondsPerSecond = 1000;
   static secondsPerMinute = 60;
@@ -47,7 +47,8 @@ class Duration {
   }
 
   get milliseconds() {
-    return this._duration % Duration.millisecondsPerSecond; // accounting for microseconds too.
+    // accounting for microseconds too (e.g., 3.24 ms, not just 3 ms)
+    return this._duration % Duration.millisecondsPerSecond;
   }
 
   get seconds() {
@@ -79,32 +80,37 @@ class Duration {
   }
 
   get short() {
-    let duration = this.milliseconds > 0 ? `${this.milliseconds}ms` : '';
-    if (this.seconds > 0) duration = `${this.seconds}s ${duration}`;
-    if (this.minutes > 0) duration = `${this.minutes}m ${duration}`;
-    if (this.hours > 0) duration = `${this.hours}h ${duration}`;
-    if (this.days > 0) duration = `${this.days}d ${duration}`;
+    const { milliseconds, seconds, minutes, hours, days } = this;
+
+    let duration = milliseconds > 0 ? `${milliseconds}ms` : '';
+    if (seconds > 0) duration = `${seconds}s ${duration}`;
+    if (minutes > 0) duration = `${minutes}m ${duration}`;
+    if (hours > 0) duration = `${hours}h ${duration}`;
+    if (days > 0) duration = `${days}d ${duration}`;
 
     return duration.trim();
   }
 
   get medium() {
-    let duration = this.milliseconds > 0 ? `${this.milliseconds}ms` : '';
-    if (this.seconds > 0) duration = `${this.seconds} ${this._pluralize(this.seconds, 'sec')} ${duration}`;
-    if (this.minutes > 0) duration = `${this.minutes} ${this._pluralize(this.minutes, 'min')} ${duration}`;
-    if (this.hours > 0) duration = `${this.hours} ${this._pluralize(this.hours, 'hr')} ${duration}`;
-    if (this.days > 0) duration = `${this.days} ${this._pluralize(this.days, 'day')} ${duration}`;
+    const { milliseconds, seconds, minutes, hours, days } = this;
+
+    let duration = milliseconds > 0 ? `${milliseconds}ms` : '';
+    if (seconds > 0) duration = `${seconds} ${pluralize(seconds, 'sec')} ${duration}`;
+    if (minutes > 0) duration = `${minutes} ${pluralize(minutes, 'min')} ${duration}`;
+    if (hours > 0) duration = `${hours} ${pluralize(hours, 'hr')} ${duration}`;
+    if (days > 0) duration = `${days} ${pluralize(days, 'day')} ${duration}`;
 
     return duration.trim();
   }
 
   get long() {
-    let duration =
-      this.milliseconds > 0 ? `${this.milliseconds} ${this._pluralize(this.milliseconds, 'millisecond')}` : '';
-    if (this.seconds > 0) duration = `${this.seconds} ${this._pluralize(this.seconds, 'second')} ${duration}`;
-    if (this.minutes > 0) duration = `${this.minutes} ${this._pluralize(this.minutes, 'minute')} ${duration}`;
-    if (this.hours > 0) duration = `${this.hours} ${this._pluralize(this.hours, 'hour')} ${duration}`;
-    if (this.days > 0) duration = `${this.days} ${this._pluralize(this.days, 'day')} ${duration}`;
+    const { milliseconds, seconds, minutes, hours, days } = this;
+
+    let duration = milliseconds > 0 ? `${milliseconds} ${pluralize(milliseconds, 'millisecond')}` : '';
+    if (seconds > 0) duration = `${seconds} ${pluralize(seconds, 'second')} ${duration}`;
+    if (minutes > 0) duration = `${minutes} ${pluralize(minutes, 'minute')} ${duration}`;
+    if (hours > 0) duration = `${hours} ${pluralize(hours, 'hour')} ${duration}`;
+    if (days > 0) duration = `${days} ${pluralize(days, 'day')} ${duration}`;
 
     return duration.trim();
   }
@@ -120,15 +126,15 @@ class Duration {
     return pattern.replace(/%d|%h|%m|%s|%l/gu, (match) => {
       switch (match) {
         case '%d':
-          return Math.floor(this.inDays);
+          return this.days;
         case '%h':
-          return Math.floor(this.inHours);
+          return this.hours;
         case '%m':
-          return Math.floor(this.inMinutes % Duration.minutesPerHour);
+          return this.minutes;
         case '%s':
-          return Math.floor(this.inSeconds % Duration.secondsPerMinute);
+          return this.seconds;
         case '%l':
-          return Math.floor(this.inMilliseconds % Duration.millisecondsPerSecond);
+          return this.milliseconds;
       }
     });
   }
@@ -163,10 +169,6 @@ class Duration {
     return diff === 0 ? 0 : diff > 0 ? 1 : -1;
   }
 
-  toString() {
-    return `Duration in milliseconds: ${this.inMilliseconds}`;
-  }
-
   toJson() {
     return {
       milliseconds: this.inMilliseconds,
@@ -177,10 +179,12 @@ class Duration {
     };
   }
 
-  _pluralize(value, unit) {
-    return value > 1 ? `${unit}s` : unit;
+  toString() {
+    return `Duration in milliseconds: ${this.inMilliseconds}`;
   }
 }
+
+const pluralize = (value, unit) => (value > 1 ? `${unit}s` : unit);
 
 module.exports = Duration;
 module.exports.default = Duration;
