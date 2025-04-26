@@ -34,7 +34,7 @@ declare class Duration {
   /** The number of milliseconds in a day. */
   static readonly millisecondsPerDay: number;
 
-  /** A zero duration. */
+  /** An empty duration, representing zero time. */
   static readonly zero: Duration;
 
   /**
@@ -67,9 +67,6 @@ declare class Duration {
    * ```
    */
   static fromDate(date: Date | string | number, now?: Date | string | number): Duration;
-
-  /** An empty duration, representing zero time. */
-  static zero(): Duration;
 
   /** Gets the whole milliseconds spanned by this Duration. */
   get inMilliseconds(): number;
