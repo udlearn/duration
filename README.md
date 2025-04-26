@@ -3,8 +3,8 @@
 Interpret and format time durations in days, hours, minutes, seconds and milliseconds.
 
 This utility gives you the ability to quickly interpret a span of time (duration) in a
-human-readable format. For example, `7,200` seconds is equivalent to `2` hours, which is
-way more friendly, right? So, this utility can and will help you achieve this fast.
+human-readable format. For instance, `7200` seconds are equivalent to `2` hours, which
+is way more friendly, right? So, this utility can and will help you achieve this fast.
 
 ## Installation
 
@@ -57,8 +57,8 @@ const duration = Duration.from(5400000);
 console.log(duration.format('%h hr %m min ago')); // "1 hr 30 min ago"
 ```
 
-> Please note that this utility does not currently support **locales**.
-> All output formats are in English only. If you need localized duration strings,
+> Note that this utility does **not** currently support **locales**. All
+> output formats are in English only. If you need localized duration strings,
 > you'll need to implement that separately in your application.
 
 ## Contributing

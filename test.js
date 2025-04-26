@@ -48,6 +48,15 @@ test('Duration.from', () => {
   assert.equal(duration.milliseconds, 0);
 });
 
+test('Duration.fromDate', () => {
+  const duration = Duration.fromDate('2025-04-25T12:30:00Z', '2025-04-26T12:30:00Z');
+  assert.equal(duration.inDays, 1);
+  assert.equal(duration.inHours, 24);
+  assert.equal(duration.inMinutes, 1440);
+  assert.equal(duration.inSeconds, 86400);
+  assert.equal(duration.inMilliseconds, 86400000);
+});
+
 test('Duration.short', () => {
   const duration = new Duration({ hours: 1.5, minutes: 30 });
   assert.equal(duration.short, '2h');
@@ -102,11 +111,21 @@ test('Duration.divide', () => {
   assert.throws(() => duration.divide(0), Error);
 });
 
+test('Duration.negate', () => {
+  const duration = new Duration({ hours: 2 });
+  const negated = duration.negate();
+  assert.equal(negated.inHours, -2);
+  assert.equal(negated.isNegative, true);
+  assert.equal(negated.isZero, false);
+  assert.equal(negated.isPositive, false);
+});
+
 test('Duration.compareTo', () => {
   const duration1 = new Duration({ hours: 2 });
   const duration2 = new Duration({ hours: 3 });
-  const result = duration1.compareTo(duration2);
-  assert.equal(result, -1);
+  assert.equal(duration1.compareTo(duration2), -1);
+  assert.equal(duration2.compareTo(duration1), 1);
+  assert.equal(duration1.compareTo(duration1), 0);
 });
 
 test('Duration.toString', () => {

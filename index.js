@@ -8,6 +8,7 @@ class Duration {
   static millisecondsPerMinute = Duration.millisecondsPerSecond * Duration.secondsPerMinute;
   static millisecondsPerHour = Duration.minutesPerHour * Duration.millisecondsPerMinute;
   static millisecondsPerDay = Duration.hoursPerDay * Duration.millisecondsPerHour;
+  static zero = new Duration({ milliseconds: 0 });
 
   constructor({ days = 0, hours = 0, minutes = 0, seconds = 0, milliseconds = 0 } = {}) {
     this._duration =
@@ -22,8 +23,10 @@ class Duration {
     return new Duration({ milliseconds });
   }
 
-  static zero() {
-    return new Duration({ milliseconds: 0 });
+  static fromDate(date, now = new Date()) {
+    now = now instanceof Date ? now : new Date(now);
+    date = date instanceof Date ? date : new Date(date);
+    return new Duration({ milliseconds: now.getTime() - date.getTime() });
   }
 
   get inMilliseconds() {
@@ -140,19 +143,13 @@ class Duration {
   }
 
   add(duration) {
-    if (duration instanceof Duration) {
-      return new Duration({ milliseconds: this.inMilliseconds + duration.inMilliseconds });
-    }
-
-    return new Duration({ milliseconds: this.inMilliseconds + new Duration(duration).inMilliseconds });
+    const milliseconds = (duration instanceof Duration ? duration : new Duration(duration)).inMilliseconds;
+    return new Duration({ milliseconds: this.inMilliseconds + milliseconds });
   }
 
   subtract(duration) {
-    if (duration instanceof Duration) {
-      return new Duration({ milliseconds: this.inMilliseconds - duration.inMilliseconds });
-    }
-
-    return new Duration({ milliseconds: this.inMilliseconds - new Duration(duration).inMilliseconds });
+    const milliseconds = (duration instanceof Duration ? duration : new Duration(duration)).inMilliseconds;
+    return new Duration({ milliseconds: this.inMilliseconds - milliseconds });
   }
 
   multiply(multiplier) {
@@ -162,6 +159,10 @@ class Duration {
   divide(divisor) {
     if (divisor === 0) throw new Error('Division by zero is not allowed');
     return new Duration({ milliseconds: this.inMilliseconds / divisor });
+  }
+
+  negate() {
+    return this.multiply(-1);
   }
 
   compareTo(duration) {

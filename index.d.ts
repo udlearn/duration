@@ -34,9 +34,12 @@ declare class Duration {
   /** The number of milliseconds in a day. */
   static readonly millisecondsPerDay: number;
 
+  /** A zero duration. */
+  static readonly zero: Duration;
+
   /**
    * Creates a new `Duration` instance.
-   * @param values - The values to initialize the duration with if any.
+   * @param {DurationOptions} values - to initialize the duration with if any.
    *
    * The `Duration` represents a single number of milliseconds, which is
    * the sum of all the individual arguments to the constructor.
@@ -50,22 +53,37 @@ declare class Duration {
    */
   static from(milliseconds: number): Duration;
 
+  /**
+   * Creates a `Duration` from a date.
+   * @param {Date | string | number} date - `Date` object or date ISO-string or timestamp.
+   * @param {Date | string | number} [now] - The current date if not provided.
+   * @returns A new Duration instance
+   *
+   * @example
+   * ```js
+   * Duration.fromDate('2025-04-25T12:30:00Z');
+   * Duration.fromDate(new Date(2025, 3, 25, 12, 30, 0));
+   * Duration.fromDate(1745584200000);
+   * ```
+   */
+  static fromDate(date: Date | string | number, now?: Date | string | number): Duration;
+
   /** An empty duration, representing zero time. */
   static zero(): Duration;
 
-  /** Gets the duration in milliseconds. */
+  /** Gets the whole milliseconds spanned by this Duration. */
   get inMilliseconds(): number;
 
-  /** Gets the duration in seconds. */
+  /** Gets the entire seconds spanned by this Duration. */
   get inSeconds(): number;
 
-  /** Gets the duration in minutes. */
+  /** Gets the entire minutes spanned by this Duration. */
   get inMinutes(): number;
 
-  /** Gets the duration in hours. */
+  /** Gets the entire hours spanned by this Duration. */
   get inHours(): number;
 
-  /** Gets the duration in days. */
+  /** Gets the entire days spanned by this Duration. */
   get inDays(): number;
 
   /** Gets the number of milliseconds of the duration. */
@@ -153,6 +171,9 @@ declare class Duration {
 
   /** Divides the current duration by a divisor. */
   divide(divisor: number): Duration;
+
+  /** Negates the current duration. */
+  negate(): Duration;
 
   /** Compares the current duration to another duration. */
   compareTo(duration: Duration): number;
