@@ -3,8 +3,8 @@
 Interpret and format time durations in days, hours, minutes, seconds and milliseconds.
 
 This utility gives you the ability to quickly interpret a span of time (duration) in a
-human-readable format. For example, `7,200` seconds is equivalent to `2` hours, which is
-way more friendly, right? So, this utility can and will help you achieve this fast.
+human-readable format. For instance, `7200` seconds are equivalent to `2` hours, which
+is way more friendly, right? So, this utility can and will help you achieve this fast.
 
 ## Installation
 
@@ -14,16 +14,21 @@ npm i @udlearn/duration
 
 ## Usage
 
-```ts
-const Duration = require('@udlearn/duration');
-
-const duration = new Duration({ hours: 1.5 });
-console.log(duration.short); // 1h 30m
-console.log(duration.medium); // 1 hr 30 mins
-console.log(duration.long); // 1 hour 30 minutes
-console.log(duration.minutes); // 30
-console.log(duration.inMilliseconds); // 5400000
-console.log(duration.format('%h hour(s) %m minute(s) ago')); // 1 hour(s) 30 minute(s) ago
+```js
+> const Duration = require('@udlearn/duration');
+> const duration = new Duration({ hours: 1.5 });
+> duration.short
+'1h 30m'
+> duration.medium
+'1 hr 30 mins'
+> duration.long
+'1 hour 30 minutes'
+> duration.minutes
+30
+> duration.inMilliseconds
+5400000
+> duration.format('%h hour(s) %m minute(s) ago')
+'1 hour(s) 30 minute(s) ago'
 ```
 
 When creating a new Duration instance, you can specify time values in different units.
@@ -53,18 +58,19 @@ Or use one of the predefined formats:
 For example:
 
 ```js
-const duration = Duration.from(5400000);
-console.log(duration.format('%h hr %m min ago')); // "1 hr 30 min ago"
+> const duration = Duration.from(5400000)
+> duration.format('%h hr %m min ago')
+'1 hr 30 min ago'
 ```
 
-> Please note that this utility does not currently support **locales**.
-> All output formats are in English only. If you need localized duration strings,
+> Note that this utility does **not** currently support **locales**. All
+> output formats are in English only. If you need localized duration strings,
 > you'll need to implement that separately in your application.
 
 ## Contributing
 
 Please follow the [Contributing](CONTRIBUTING.md) guidelines if you wish to collaborate
-or share some feedback on how to make this better.
+or share some feedback on how to make this utility better.
 
 ## License
 
