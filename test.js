@@ -46,6 +46,15 @@ test('Duration.from', () => {
   assert.equal(duration.minutes, 0);
   assert.equal(duration.seconds, 0);
   assert.equal(duration.milliseconds, 0);
+
+  assert.equal(Duration.from(1, 'ms').inMilliseconds, 1);
+  assert.equal(Duration.from(1, 's').inSeconds, 1);
+  assert.equal(Duration.from(1, 'm').inMinutes, 1);
+  assert.equal(Duration.from(1, 'h').inHours, 1);
+  assert.equal(Duration.from(1, 'd').inDays, 1);
+
+  assert.equal(Duration.from(1).inMilliseconds, 1); // default to milliseconds
+  assert.equal(Duration.from(1, 'wrong-unit').inMilliseconds, 1); // fallback to milliseconds
 });
 
 test('Duration.fromDate', () => {

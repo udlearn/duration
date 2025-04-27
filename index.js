@@ -19,8 +19,17 @@ class Duration {
       Duration.millisecondsPerDay * days;
   }
 
-  static from(milliseconds) {
-    return new Duration({ milliseconds });
+  static from(value, unit = 'ms') {
+    for (const [key, aliases] of Object.entries(ALIASES)) {
+      if (aliases.includes(String(unit).toLowerCase())) {
+        unit = key;
+        break;
+      }
+    }
+    // when unit is not found, default to milliseconds
+    unit = Object.keys(ALIASES).includes(unit) ? unit : 'milliseconds';
+
+    return new Duration({ [unit]: value });
   }
 
   static fromDate(date, now = new Date()) {
@@ -186,6 +195,14 @@ class Duration {
 }
 
 const pluralize = (value, unit) => (value > 1 ? `${unit}s` : unit);
+
+const ALIASES = {
+  milliseconds: ['ms', 'millisecond', 'milliseconds'],
+  seconds: ['s', 'sec', 'second', 'seconds'],
+  minutes: ['m', 'min', 'minute', 'minutes'],
+  hours: ['h', 'hr', 'hour', 'hours'],
+  days: ['d', 'day', 'days'],
+};
 
 module.exports = Duration;
 module.exports.default = Duration;

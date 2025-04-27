@@ -5,5 +5,5 @@ console.log(duration.short);
 console.log(duration.medium);
 console.log(duration.long);
 console.log(duration.minutes);
-console.log(duration.inMilliseconds);
+console.log(duration.inMinutes);
 console.log(duration.format('%h hour(s) %m minute(s) ago'));

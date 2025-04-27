@@ -48,10 +48,11 @@ declare class Duration {
 
   /**
    * Creates a `Duration` from a number of milliseconds.
-   * @param milliseconds - The number of milliseconds.
+   * @param {number} value - value to convert to a duration.
+   * @param {string} [unit] - default to 'ms', the unit of the value (e.g., 's' or 'sec' for seconds).
    * @returns A new Duration instance
    */
-  static from(milliseconds: number): Duration;
+  static from(value: number, unit?: string): Duration;
 
   /**
    * Creates a `Duration` from a date.

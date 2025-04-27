@@ -25,8 +25,8 @@ npm i @udlearn/duration
 '1 hour 30 minutes'
 > duration.minutes
 30
-> duration.inMilliseconds
-5400000
+> duration.inMinutes
+90
 > duration.format('%h hour(s) %m minute(s) ago')
 '1 hour(s) 30 minute(s) ago'
 ```
