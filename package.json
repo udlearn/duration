@@ -8,22 +8,20 @@
   "license": "MIT",
   "main": "index.js",
   "types": "index.d.ts",
-  "files": ["index.js", "index.d.ts"],
+  "files": ["index.js", "index.d.ts", "duration"],
+  "bin": {"duration": "./duration"},
   "scripts": {
     "start": "node example.js",
-    "cli": "node cli.js",
+    "cli": "node cli.js -h",
     "format": "prettier --write '**/*.(j|t)s'",
     "test": "node test.js"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "prettier": "3.5.3",
+    "rollup": "^4.40.0",
     "yargs-parser": "^21.1.1"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all",
-    "printWidth": 120,
-    "tabWidth": 2,
-    "useTabs": false
   }
 }

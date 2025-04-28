@@ -14,6 +14,17 @@ npm i @udlearn/duration
 
 ## Usage
 
+Using **CLI**:
+
+```bash
+$ duration 3600
+> 3s 600ms
+$ duration -m --unit=sec 3660
+> 1 hr 1 min
+```
+
+Using **Node.js**:
+
 ```js
 > const Duration = require('@udlearn/duration');
 > const duration = new Duration({ hours: 1.5 });
