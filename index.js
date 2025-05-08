@@ -197,10 +197,10 @@ class Duration {
 const pluralize = (value, unit) => (value > 1 ? `${unit}s` : unit);
 
 const ALIASES = {
-  milliseconds: ['ms', 'millisecond', 'milliseconds'],
-  seconds: ['s', 'sec', 'second', 'seconds'],
-  minutes: ['m', 'min', 'minute', 'minutes'],
-  hours: ['h', 'hr', 'hour', 'hours'],
+  milliseconds: ['ms', 'milli', 'millis', 'millisecond', 'milliseconds'],
+  seconds: ['s', 'sec', 'secs', 'second', 'seconds'],
+  minutes: ['m', 'min', 'mins', 'minute', 'minutes'],
+  hours: ['h', 'hr', 'hrs', 'hour', 'hours'],
   days: ['d', 'day', 'days'],
 };
 

@@ -58,7 +58,7 @@ if (command.help) {
   for (const value of values) {
     const duration = Duration.from(value, options.unit);
     formats.forEach((format) => console.log(duration.format(format)));
-    if (options.json) console.log(duration.toJson());
+    if (options.json) console.log(JSON.stringify(duration.toJson(), undefined, 2));
   }
 }
 

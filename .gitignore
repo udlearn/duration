@@ -3,6 +3,7 @@ package-lock.json
 yarn.lock
 pnpm.lock
 duration
+*.min.js
 
 /.idea
 /.vscode
