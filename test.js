@@ -73,7 +73,7 @@ test('Duration.short', () => {
 
 test('Duration.medium', () => {
   const duration = new Duration({ hours: 1, minutes: 30, seconds: 15.25 });
-  assert.equal(duration.medium, '1 hr 30 mins 15 secs 250ms');
+  assert.equal(duration.medium, '1 hr 30 mins 15 secs 250 ms');
 });
 
 test('Duration.long', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@udlearn/duration",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Interpret and format time durations in various units",
   "repository": "github:udlearn/duration",
   "keywords": ["format", "time", "duration"],
@@ -9,8 +9,10 @@
   "main": "index.js",
   "browser": "index.min.js",
   "types": "index.d.ts",
-  "files": ["index.js", "index.min.js", "index.d.ts", "duration"],
+  "files": ["index.js", "index.min.js", "index.d.ts", "duration", "man"],
   "bin": {"duration": "./duration"},
+  "directories": { "man": "./man" },
+  "man": "./man/duration.1",
   "scripts": {
     "start": "node example.js",
     "cli": "node cli.js -h",

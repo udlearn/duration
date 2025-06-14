@@ -106,7 +106,7 @@ class Duration {
   get medium() {
     const { milliseconds, seconds, minutes, hours, days } = this;
 
-    let duration = milliseconds > 0 ? `${milliseconds}ms` : '';
+    let duration = milliseconds > 0 ? `${milliseconds} ms` : '';
     if (seconds > 0) duration = `${seconds} ${pluralize(seconds, 'sec')} ${duration}`;
     if (minutes > 0) duration = `${minutes} ${pluralize(minutes, 'min')} ${duration}`;
     if (hours > 0) duration = `${hours} ${pluralize(hours, 'hr')} ${duration}`;

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## 1.2.0 (2025-06-14)
+
+- Add manual file for CLI
+- Add space between milliseconds and values for medium formats.
+
 ## 1.2.0 (2025-05-08)
 
 - Add support for Browsers (UMD)
