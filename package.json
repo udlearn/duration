@@ -9,7 +9,7 @@
   "main": "index.js",
   "browser": "index.min.js",
   "types": "index.d.ts",
-  "files": ["index.js", "index.min.js", "index.d.ts", "duration", "man"],
+  "files": ["index.js", "index.min.js", "index.d.ts", "duration", "man/"],
   "bin": {"duration": "./duration"},
   "directories": { "man": "./man" },
   "man": "./man/duration.1",
