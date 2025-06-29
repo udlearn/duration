@@ -12,6 +12,8 @@ Options:
 --json          Display duration in JSON format.
 -u, --unit      Read duration values in the specified unit
                 (default: milliseconds; e.g., ms, s, m, h, d).
+-L, --locale    Set the locale for duration formatting
+                (default: en; e.g., en, es).
 -v, --version   Show version number.
 -h, --help      Show this help message.
 
@@ -29,10 +31,14 @@ $ duration -m 3600
 $ duration -l --unit=s 3600
 > 1 hour
 
+4. display duration in Spanish:
+$ duration -l --locale=es 3600000
+> 1 hora
+
 Visit https://www.npmjs.com/package/@udlearn/duration for more info.`;
 
 const command = argParser(process.argv.slice(2), {
-  alias: { u: 'unit', h: 'help', v: 'version' },
+  alias: { u: 'unit', L: 'locale', h: 'help', v: 'version' },
   boolean: ['s', 'm', 'l', 'json'],
 });
 
@@ -55,8 +61,9 @@ if (command.help) {
   if (options.l) formats.push('long');
   if (formats.length === 0 && !options.json) formats.push('short');
 
+  const { unit = process.env.DURATION_UNIT, locale = process.env.DURATION_LOCALE || 'en' } = options;
   for (const value of values) {
-    const duration = Duration.from(value, options.unit || process.env.DURATION_UNIT);
+    const duration = Duration.from(value, unit, locale);
     formats.forEach((format) => console.log(duration.format(format)));
     if (options.json) console.log(JSON.stringify(duration.toJson(), undefined, 2));
   }

@@ -21,10 +21,12 @@ $ duration 3600
 > 3s 600ms
 $ duration -m --unit=sec 3660
 > 1 hr 1 min
+$ duration -l --locale=es 3600000
+> 1 hora
 ```
 
 > You may use `DURATION_UNIT` as environment variable to avoid setting the `--unit` (or `-u`)
-> option every time.
+> option every time. Similarly, you can use `DURATION_LOCALE` to set the default locale.
 
 Using **Node.js**:
 
@@ -43,6 +45,8 @@ Using **Node.js**:
 90
 > duration.format('%h hour(s) %m minute(s) ago')
 '1 hour(s) 30 minute(s) ago'
+> duration.setLocale('es').long
+'1 hora 30 minutos'
 ```
 
 When creating a new Duration instance, you can specify time values in different units.
@@ -53,6 +57,7 @@ All fields are optional:
 - `minutes`: Number of minutes
 - `seconds`: Number of seconds
 - `milliseconds`: Number of milliseconds
+- `locale`: Locale for formatting (e.g., 'en', 'es')
 
 You can also use the `format()` method to customize how the duration is displayed.
 The method accepts a pattern string with the following placeholders:
@@ -77,9 +82,23 @@ For example:
 '1 hr 30 min ago'
 ```
 
-> Note that this utility does **not** currently support **locales**. All
-> output formats are in English only. If you need localized duration strings,
-> you'll need to implement that separately in your application.
+## Localization
+
+This utility now supports **locales** for internationalized duration formatting. Currently supported locales:
+
+- `en` (English) - Default
+- `es` (Spanish)
+
+You can specify a locale when creating a Duration instance or use the `setLocale()` method to change it:
+
+```js
+const duration = new Duration({ hours: 2, locale: 'es' });
+console.log(duration.long); // "2 horas"
+
+// Or change locale later
+duration.setLocale('en');
+console.log(duration.long); // "2 hours"
+```
 
 ## Contributing
 

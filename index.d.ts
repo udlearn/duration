@@ -40,24 +40,27 @@ declare class Duration {
   /**
    * Creates a new `Duration` instance.
    * @param {DurationOptions} values - to initialize the duration with if any.
+   * @param {string} [locale] - default to 'en', the locale for formatting (e.g., 'en', 'es').
    *
    * The `Duration` represents a single number of milliseconds, which is
    * the sum of all the individual arguments to the constructor.
    */
-  constructor(values?: DurationOptions);
+  constructor(values?: DurationOptions, locale?: string);
 
   /**
    * Creates a `Duration` from a specified unit.
    * @param {number} value - value to convert to a duration.
    * @param {string} [unit] - default to 'ms', the unit of the value (e.g., 's' or 'sec' for seconds).
+   * @param {string} [locale] - default to 'en', the locale for formatting (e.g., 'en', 'es').
    * @returns A new Duration instance
    */
-  static from(value: number, unit?: string): Duration;
+  static from(value: number, unit?: string, locale?: string): Duration;
 
   /**
    * Creates a `Duration` from a date.
    * @param {Date | string | number} date - `Date` object or date ISO-string or timestamp.
    * @param {Date | string | number} [now] - The current date if not provided.
+   * @param {string} [locale] - default to 'en', the locale for formatting (e.g., 'en', 'es').
    * @returns A new Duration instance
    *
    * @example
@@ -67,7 +70,7 @@ declare class Duration {
    * Duration.fromDate(1745584200000);
    * ```
    */
-  static fromDate(date: Date | string | number, now?: Date | string | number): Duration;
+  static fromDate(date: Date | string | number, now?: Date | string | number, locale?: string): Duration;
 
   /** Gets the whole milliseconds spanned by this Duration. */
   get inMilliseconds(): number;
@@ -107,6 +110,16 @@ declare class Duration {
 
   /** Gets whether the duration is positive. */
   get isPositive(): boolean;
+
+  /** Gets the current locale for formatting. */
+  get locale(): string;
+
+  /**
+   * Sets the locale for formatting.
+   * @param locale - The locale to set (e.g., 'en', 'es').
+   * @returns The same Duration instance for chaining.
+   */
+  setLocale(locale: string): Duration;
 
   /**
    * Gets the short format of the duration.

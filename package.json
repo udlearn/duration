@@ -1,22 +1,38 @@
 {
   "name": "@udlearn/duration",
-  "version": "1.2.2",
+  "version": "2.0.0-alpha.1",
   "description": "Interpret and format time durations in various units",
   "repository": "github:udlearn/duration",
-  "keywords": ["format", "time", "duration"],
+  "keywords": [
+    "format",
+    "time",
+    "duration"
+  ],
   "author": "Ralph Florent",
   "license": "MIT",
   "main": "index.js",
   "browser": "index.min.js",
   "types": "index.d.ts",
-  "files": ["index.js", "index.min.js", "index.d.ts", "duration", "man/"],
-  "bin": {"duration": "./duration"},
-  "directories": { "man": "./man" },
+  "files": [
+    "index.js",
+    "index.min.js",
+    "index.d.ts",
+    "duration",
+    "man/",
+    "locales/",
+    "l10n.js"
+  ],
+  "bin": {
+    "duration": "./duration"
+  },
+  "directories": {
+    "man": "./man"
+  },
   "man": "./man/duration.1",
   "scripts": {
     "start": "node example.js",
     "cli": "node cli.js -h",
-    "format": "prettier --write '**/*.(j|t)s'",
+    "format": "prettier --write '**/*.{js,ts,json}'",
     "build": "rollup -c",
     "test": "node test.js",
     "prepublish": "npm run format && npm run build"

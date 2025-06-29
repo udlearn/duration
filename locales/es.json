@@ -1,0 +1,34 @@
+{
+  "units": {
+    "millisecond": {
+      "singular": "milisegundo",
+      "plural": "milisegundos",
+      "short": "ms",
+      "medium": "ms"
+    },
+    "second": {
+      "singular": "segundo",
+      "plural": "segundos",
+      "short": "s",
+      "medium": "seg"
+    },
+    "minute": {
+      "singular": "minuto",
+      "plural": "minutos",
+      "short": "m",
+      "medium": "min"
+    },
+    "hour": {
+      "singular": "hora",
+      "plural": "horas",
+      "short": "h",
+      "medium": "hr"
+    },
+    "day": {
+      "singular": "día",
+      "plural": "días",
+      "short": "d",
+      "medium": "día"
+    }
+  }
+}

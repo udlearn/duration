@@ -1,5 +1,8 @@
+const l10n = require('./l10n');
+
 class Duration {
   _duration; // time in milliseconds.
+  _locale; // locale for formatting.
 
   static millisecondsPerSecond = 1000;
   static secondsPerMinute = 60;
@@ -10,7 +13,8 @@ class Duration {
   static millisecondsPerDay = Duration.hoursPerDay * Duration.millisecondsPerHour;
   static zero = new Duration({ milliseconds: 0 });
 
-  constructor({ days = 0, hours = 0, minutes = 0, seconds = 0, milliseconds = 0 } = {}) {
+  constructor({ days = 0, hours = 0, minutes = 0, seconds = 0, milliseconds = 0 } = {}, locale = 'en') {
+    this._locale = l10n.isSupported(locale) ? locale : 'en';
     this._duration =
       milliseconds +
       Duration.millisecondsPerSecond * seconds +
@@ -19,7 +23,7 @@ class Duration {
       Duration.millisecondsPerDay * days;
   }
 
-  static from(value, unit = 'ms') {
+  static from(value, unit = 'ms', locale = 'en') {
     for (const [key, aliases] of Object.entries(ALIASES)) {
       if (aliases.includes(String(unit).toLowerCase())) {
         unit = key;
@@ -29,13 +33,13 @@ class Duration {
     // when unit is not found, default to milliseconds
     unit = Object.keys(ALIASES).includes(unit) ? unit : 'milliseconds';
 
-    return new Duration({ [unit]: value });
+    return new Duration({ [unit]: value, locale });
   }
 
-  static fromDate(date, now = new Date()) {
+  static fromDate(date, now = new Date(), locale = 'en') {
     now = now instanceof Date ? now : new Date(now);
     date = date instanceof Date ? date : new Date(date);
-    return new Duration({ milliseconds: now.getTime() - date.getTime() });
+    return new Duration({ milliseconds: now.getTime() - date.getTime(), locale });
   }
 
   get inMilliseconds() {
@@ -91,14 +95,26 @@ class Duration {
     return this._duration > 0;
   }
 
+  get locale() {
+    return this._locale;
+  }
+
+  setLocale(locale) {
+    if (l10n.isSupported(locale)) {
+      this._locale = locale;
+    }
+    return this;
+  }
+
   get short() {
     const { milliseconds, seconds, minutes, hours, days } = this;
 
-    let duration = milliseconds > 0 ? `${milliseconds}ms` : '';
-    if (seconds > 0) duration = `${seconds}s ${duration}`;
-    if (minutes > 0) duration = `${minutes}m ${duration}`;
-    if (hours > 0) duration = `${hours}h ${duration}`;
-    if (days > 0) duration = `${days}d ${duration}`;
+    let duration =
+      milliseconds > 0 ? `${milliseconds}${l10n.getUnitName('millisecond', milliseconds, 'short', this._locale)}` : '';
+    if (seconds > 0) duration = `${seconds}${l10n.getUnitName('second', seconds, 'short', this._locale)} ${duration}`;
+    if (minutes > 0) duration = `${minutes}${l10n.getUnitName('minute', minutes, 'short', this._locale)} ${duration}`;
+    if (hours > 0) duration = `${hours}${l10n.getUnitName('hour', hours, 'short', this._locale)} ${duration}`;
+    if (days > 0) duration = `${days}${l10n.getUnitName('day', days, 'short', this._locale)} ${duration}`;
 
     return duration.trim();
   }
@@ -106,11 +122,14 @@ class Duration {
   get medium() {
     const { milliseconds, seconds, minutes, hours, days } = this;
 
-    let duration = milliseconds > 0 ? `${milliseconds} ms` : '';
-    if (seconds > 0) duration = `${seconds} ${pluralize(seconds, 'sec')} ${duration}`;
-    if (minutes > 0) duration = `${minutes} ${pluralize(minutes, 'min')} ${duration}`;
-    if (hours > 0) duration = `${hours} ${pluralize(hours, 'hr')} ${duration}`;
-    if (days > 0) duration = `${days} ${pluralize(days, 'day')} ${duration}`;
+    let duration =
+      milliseconds > 0
+        ? `${milliseconds} ${l10n.getUnitName('millisecond', milliseconds, 'medium', this._locale)}`
+        : '';
+    if (seconds > 0) duration = `${seconds} ${l10n.getUnitName('second', seconds, 'medium', this._locale)} ${duration}`;
+    if (minutes > 0) duration = `${minutes} ${l10n.getUnitName('minute', minutes, 'medium', this._locale)} ${duration}`;
+    if (hours > 0) duration = `${hours} ${l10n.getUnitName('hour', hours, 'medium', this._locale)} ${duration}`;
+    if (days > 0) duration = `${days} ${l10n.getUnitName('day', days, 'medium', this._locale)} ${duration}`;
 
     return duration.trim();
   }
@@ -118,11 +137,12 @@ class Duration {
   get long() {
     const { milliseconds, seconds, minutes, hours, days } = this;
 
-    let duration = milliseconds > 0 ? `${milliseconds} ${pluralize(milliseconds, 'millisecond')}` : '';
-    if (seconds > 0) duration = `${seconds} ${pluralize(seconds, 'second')} ${duration}`;
-    if (minutes > 0) duration = `${minutes} ${pluralize(minutes, 'minute')} ${duration}`;
-    if (hours > 0) duration = `${hours} ${pluralize(hours, 'hour')} ${duration}`;
-    if (days > 0) duration = `${days} ${pluralize(days, 'day')} ${duration}`;
+    let duration =
+      milliseconds > 0 ? `${milliseconds} ${l10n.getUnitName('millisecond', milliseconds, 'long', this._locale)}` : '';
+    if (seconds > 0) duration = `${seconds} ${l10n.getUnitName('second', seconds, 'long', this._locale)} ${duration}`;
+    if (minutes > 0) duration = `${minutes} ${l10n.getUnitName('minute', minutes, 'long', this._locale)} ${duration}`;
+    if (hours > 0) duration = `${hours} ${l10n.getUnitName('hour', hours, 'long', this._locale)} ${duration}`;
+    if (days > 0) duration = `${days} ${l10n.getUnitName('day', days, 'long', this._locale)} ${duration}`;
 
     return duration.trim();
   }
@@ -152,21 +172,21 @@ class Duration {
 
   add(duration) {
     const milliseconds = (duration instanceof Duration ? duration : new Duration(duration)).inMilliseconds;
-    return new Duration({ milliseconds: this.inMilliseconds + milliseconds });
+    return new Duration({ milliseconds: this.inMilliseconds + milliseconds, locale: this._locale });
   }
 
   subtract(duration) {
     const milliseconds = (duration instanceof Duration ? duration : new Duration(duration)).inMilliseconds;
-    return new Duration({ milliseconds: this.inMilliseconds - milliseconds });
+    return new Duration({ milliseconds: this.inMilliseconds - milliseconds, locale: this._locale });
   }
 
   multiply(multiplier) {
-    return new Duration({ milliseconds: this.inMilliseconds * multiplier });
+    return new Duration({ milliseconds: this.inMilliseconds * multiplier, locale: this._locale });
   }
 
   divide(divisor) {
     if (divisor === 0) throw new Error('Division by zero is not allowed');
-    return new Duration({ milliseconds: this.inMilliseconds / divisor });
+    return new Duration({ milliseconds: this.inMilliseconds / divisor, locale: this._locale });
   }
 
   negate() {
@@ -192,8 +212,6 @@ class Duration {
     return `Duration in milliseconds: ${this.inMilliseconds}`;
   }
 }
-
-const pluralize = (value, unit) => (value > 1 ? `${unit}s` : unit);
 
 const ALIASES = {
   milliseconds: ['ms', 'milli', 'millis', 'millisecond', 'milliseconds'],
