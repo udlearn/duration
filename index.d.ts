@@ -47,7 +47,7 @@ declare class Duration {
   constructor(values?: DurationOptions);
 
   /**
-   * Creates a `Duration` from a number of milliseconds.
+   * Creates a `Duration` from a specified unit.
    * @param {number} value - value to convert to a duration.
    * @param {string} [unit] - default to 'ms', the unit of the value (e.g., 's' or 'sec' for seconds).
    * @returns A new Duration instance

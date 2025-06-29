@@ -7,7 +7,7 @@ const usage = `Usage: duration [options] <milliseconds...>
 
 Options:
 -s              Display duration in short format (e.g., 1h 30m).
--m              Display duration in medium format (e.g., 1 hr 30 min).
+-m              Display duration in medium format (e.g., 1 hr 30 mins).
 -l              Display duration in long format (e.g., 1 hour 30 minutes).
 --json          Display duration in JSON format.
 -u, --unit      Read duration values in the specified unit
@@ -56,7 +56,7 @@ if (command.help) {
   if (formats.length === 0 && !options.json) formats.push('short');
 
   for (const value of values) {
-    const duration = Duration.from(value, options.unit);
+    const duration = Duration.from(value, options.unit || process.env.DURATION_UNIT);
     formats.forEach((format) => console.log(duration.format(format)));
     if (options.json) console.log(JSON.stringify(duration.toJson(), undefined, 2));
   }

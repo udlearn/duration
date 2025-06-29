@@ -23,6 +23,9 @@ $ duration -m --unit=sec 3660
 > 1 hr 1 min
 ```
 
+> You may use `DURATION_UNIT` as environment variable to avoid setting the `--unit` (or `-u`)
+> option every time.
+
 Using **Node.js**:
 
 ```js
@@ -69,7 +72,7 @@ Or use one of the predefined formats:
 For example:
 
 ```js
-> const duration = Duration.from(5400000)
+> const duration = Duration.from(5_400_000)
 > duration.format('%h hr %m min ago')
 '1 hr 30 min ago'
 ```

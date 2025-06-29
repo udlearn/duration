@@ -1,6 +1,6 @@
 {
   "name": "@udlearn/duration",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Interpret and format time durations in various units",
   "repository": "github:udlearn/duration",
   "keywords": ["format", "time", "duration"],

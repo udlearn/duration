@@ -129,7 +129,6 @@ class Duration {
 
   format(pattern = 'short' /* 'short' | 'medium' | 'long' | pattern */) {
     if (typeof pattern !== 'string') pattern = 'short';
-    pattern = pattern.toLowerCase();
 
     if (pattern === 'short') return this.short;
     if (pattern === 'medium') return this.medium;
