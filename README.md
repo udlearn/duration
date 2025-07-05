@@ -36,7 +36,7 @@ Using **Node.js**:
 > duration.short
 '1h 30m'
 > duration.medium
-'1 hr 30 mins'
+'1 hr 30 min'
 > duration.long
 '1 hour 30 minutes'
 > duration.minutes
@@ -71,8 +71,8 @@ The method accepts a pattern string with the following placeholders:
 Or use one of the predefined formats:
 
 - `'short'`: Compact format (e.g. "1h 30m")
-- `'medium'`: Medium format (e.g. "1 hr 30 mins")
-- `'long'`: Full format (e.g. "1 hour 30 minutes")
+- `'medium'`: Medium format (e.g. "1 hr 30 min")
+- `'long'`: Fully readable format (e.g. "1 hour 30 minutes")
 
 For example:
 
@@ -88,6 +88,8 @@ This utility now supports **locales** for internationalized duration formatting.
 
 - `en` (English) - Default
 - `es` (Spanish)
+- `fr` (French)
+- `de` (German)
 
 You can specify a locale when creating a Duration instance or use the `setLocale()` method to change it:
 
@@ -95,9 +97,9 @@ You can specify a locale when creating a Duration instance or use the `setLocale
 const duration = new Duration({ hours: 2, locale: 'es' });
 console.log(duration.long); // "2 horas"
 
-// Or change locale later
-duration.setLocale('en');
-console.log(duration.long); // "2 hours"
+// Examples in different locales
+console.log(duration.setLocale('fr').long); // "2 heures"
+console.log(duration.setLocale('de').long); // "2 Stunden"
 ```
 
 ## Contributing

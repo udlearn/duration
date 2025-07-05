@@ -73,7 +73,7 @@ test('Duration.short', () => {
 
 test('Duration.medium', () => {
   const duration = new Duration({ hours: 1, minutes: 30, seconds: 15.25 });
-  assert.equal(duration.medium, '1 hr 30 mins 15 secs 250 ms');
+  assert.equal(duration.medium, '1 hr 30 min 15 sec 250 ms');
 });
 
 test('Duration.long', () => {
@@ -150,4 +150,22 @@ test('Duration.toJson', () => {
   assert.equal(json.minutes, 1440);
   assert.equal(json.seconds, 86400);
   assert.equal(json.milliseconds, 86400000);
+});
+
+test('Duration.locale', () => {
+  const duration = new Duration({ hours: 1, minutes: 30, seconds: 15.25 }, 'fr');
+  assert.equal(duration.locale, 'fr');
+  assert.equal(duration.short, '1h 30m 15s 250ms');
+  assert.equal(duration.medium, '1 hr 30 min 15 sec 250 ms');
+  assert.equal(duration.long, '1 heure 30 minutes 15 secondes 250 millisecondes');
+
+  duration.setLocale('es');
+  assert.equal(duration.short, '1h 30m 15s 250ms');
+  assert.equal(duration.medium, '1 hr 30 min 15 seg 250 ms');
+  assert.equal(duration.long, '1 hora 30 minutos 15 segundos 250 milisegundos');
+
+  duration.setLocale('de');
+  assert.equal(duration.short, '1St 30M 15S 250Ms');
+  assert.equal(duration.medium, '1 Std 30 Min 15 Sek 250 Ms');
+  assert.equal(duration.long, '1 Stunde 30 Minuten 15 Sekunden 250 Millisekunden');
 });

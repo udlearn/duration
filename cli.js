@@ -7,7 +7,7 @@ const usage = `Usage: duration [options] <milliseconds...>
 
 Options:
 -s              Display duration in short format (e.g., 1h 30m).
--m              Display duration in medium format (e.g., 1 hr 30 mins).
+-m              Display duration in medium format (e.g., 1 hr 30 min).
 -l              Display duration in long format (e.g., 1 hour 30 minutes).
 --json          Display duration in JSON format.
 -u, --unit      Read duration values in the specified unit

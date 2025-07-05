@@ -107,42 +107,37 @@ class Duration {
   }
 
   get short() {
-    const { milliseconds, seconds, minutes, hours, days } = this;
+    const { milliseconds: ms, seconds, minutes, hours, days, _locale: locale } = this;
 
-    let duration =
-      milliseconds > 0 ? `${milliseconds}${l10n.getUnitName('millisecond', milliseconds, 'short', this._locale)}` : '';
-    if (seconds > 0) duration = `${seconds}${l10n.getUnitName('second', seconds, 'short', this._locale)} ${duration}`;
-    if (minutes > 0) duration = `${minutes}${l10n.getUnitName('minute', minutes, 'short', this._locale)} ${duration}`;
-    if (hours > 0) duration = `${hours}${l10n.getUnitName('hour', hours, 'short', this._locale)} ${duration}`;
-    if (days > 0) duration = `${days}${l10n.getUnitName('day', days, 'short', this._locale)} ${duration}`;
+    let duration = ms > 0 ? `${ms}${l10n.getUnit('millis', ms, 'short', locale)}` : '';
+    if (seconds > 0) duration = `${seconds}${l10n.getUnit('second', seconds, 'short', locale)} ${duration}`;
+    if (minutes > 0) duration = `${minutes}${l10n.getUnit('minute', minutes, 'short', locale)} ${duration}`;
+    if (hours > 0) duration = `${hours}${l10n.getUnit('hour', hours, 'short', locale)} ${duration}`;
+    if (days > 0) duration = `${days}${l10n.getUnit('day', days, 'short', locale)} ${duration}`;
 
     return duration.trim();
   }
 
   get medium() {
-    const { milliseconds, seconds, minutes, hours, days } = this;
+    const { milliseconds: ms, seconds, minutes, hours, days, _locale: locale } = this;
 
-    let duration =
-      milliseconds > 0
-        ? `${milliseconds} ${l10n.getUnitName('millisecond', milliseconds, 'medium', this._locale)}`
-        : '';
-    if (seconds > 0) duration = `${seconds} ${l10n.getUnitName('second', seconds, 'medium', this._locale)} ${duration}`;
-    if (minutes > 0) duration = `${minutes} ${l10n.getUnitName('minute', minutes, 'medium', this._locale)} ${duration}`;
-    if (hours > 0) duration = `${hours} ${l10n.getUnitName('hour', hours, 'medium', this._locale)} ${duration}`;
-    if (days > 0) duration = `${days} ${l10n.getUnitName('day', days, 'medium', this._locale)} ${duration}`;
+    let duration = ms > 0 ? `${ms} ${l10n.getUnit('millis', ms, 'medium', locale)}` : '';
+    if (seconds > 0) duration = `${seconds} ${l10n.getUnit('second', seconds, 'medium', locale)} ${duration}`;
+    if (minutes > 0) duration = `${minutes} ${l10n.getUnit('minute', minutes, 'medium', locale)} ${duration}`;
+    if (hours > 0) duration = `${hours} ${l10n.getUnit('hour', hours, 'medium', locale)} ${duration}`;
+    if (days > 0) duration = `${days} ${l10n.getUnit('day', days, 'medium', locale)} ${duration}`;
 
     return duration.trim();
   }
 
   get long() {
-    const { milliseconds, seconds, minutes, hours, days } = this;
+    const { milliseconds: ms, seconds, minutes, hours, days, _locale: locale } = this;
 
-    let duration =
-      milliseconds > 0 ? `${milliseconds} ${l10n.getUnitName('millisecond', milliseconds, 'long', this._locale)}` : '';
-    if (seconds > 0) duration = `${seconds} ${l10n.getUnitName('second', seconds, 'long', this._locale)} ${duration}`;
-    if (minutes > 0) duration = `${minutes} ${l10n.getUnitName('minute', minutes, 'long', this._locale)} ${duration}`;
-    if (hours > 0) duration = `${hours} ${l10n.getUnitName('hour', hours, 'long', this._locale)} ${duration}`;
-    if (days > 0) duration = `${days} ${l10n.getUnitName('day', days, 'long', this._locale)} ${duration}`;
+    let duration = ms > 0 ? `${ms} ${l10n.getUnit('millis', ms, 'long', locale)}` : '';
+    if (seconds > 0) duration = `${seconds} ${l10n.getUnit('second', seconds, 'long', locale)} ${duration}`;
+    if (minutes > 0) duration = `${minutes} ${l10n.getUnit('minute', minutes, 'long', locale)} ${duration}`;
+    if (hours > 0) duration = `${hours} ${l10n.getUnit('hour', hours, 'long', locale)} ${duration}`;
+    if (days > 0) duration = `${days} ${l10n.getUnit('day', days, 'long', locale)} ${duration}`;
 
     return duration.trim();
   }
