@@ -1,9 +1,9 @@
 {
   "name": "@udlearn/duration",
-  "version": "1.2.2",
-  "description": "Interpret and format time durations in various units",
+  "version": "1.3.0",
+  "description": "Parse, interpret and format time durations in various units",
   "repository": "github:udlearn/duration",
-  "keywords": ["format", "time", "duration"],
+  "keywords": ["parse", "format", "time", "duration", "english"],
   "author": "Ralph Florent",
   "license": "MIT",
   "main": "index.js",

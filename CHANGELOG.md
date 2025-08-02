@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## 1.3.0 (2025-08-01)
+
+- Add `Duration.parse()` static method for parsing English duration strings
+- Support short, medium, long formats
+- Case-insensitive parsing with flexible spacing
+- Perfect round-trip compatibility with existing format methods
+
 ## 1.2.2 (2025-06-28)
 
 - Use `DURATION_UNIT` environment variable to set default units for CLI

@@ -38,6 +38,66 @@ class Duration {
     return new Duration({ milliseconds: now.getTime() - date.getTime() });
   }
 
+  static parse(entry) {
+    if (typeof entry !== 'string') throw new Error('Duration must be a string');
+
+    const normalized = entry.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (!normalized) return Duration.zero;
+
+    const duration = { days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 };
+    const patterns = [
+      // order matters: longer/more specific patterns first to avoid conflicts
+      { unit: 'milliseconds', pattern: /(\d+(?:\.\d+)?)\s*(?:milliseconds|millisecond|millis|milli|ms)(?=\s|$|\d)/g },
+      { unit: 'seconds', pattern: /(\d+(?:\.\d+)?)\s*(?:seconds|second|secs|sec)(?=\s|$|\d)/g },
+      { unit: 'minutes', pattern: /(\d+(?:\.\d+)?)\s*(?:minutes|minute|mins|min)(?=\s|$|\d)/g },
+      { unit: 'hours', pattern: /(\d+(?:\.\d+)?)\s*(?:hours|hour|hrs|hr)(?=\s|$|\d)/g },
+      { unit: 'days', pattern: /(\d+(?:\.\d+)?)\s*(?:days|day)(?=\s|$|\d)/g },
+      // single character patterns last, with more strict boundaries
+      { unit: 'seconds', pattern: /(\d+(?:\.\d+)?)\s*s(?=\s|$|\d)/g },
+      { unit: 'minutes', pattern: /(\d+(?:\.\d+)?)\s*m(?=\s|$|\d)/g },
+      { unit: 'hours', pattern: /(\d+(?:\.\d+)?)\s*h(?=\s|$|\d)/g },
+      { unit: 'days', pattern: /(\d+(?:\.\d+)?)\s*d(?=\s|$|\d)/g },
+    ];
+
+    let hasMatches = false;
+    let processed = normalized;
+
+    for (const { unit, pattern } of patterns) {
+      let match;
+      let totalValue = 0;
+
+      pattern.lastIndex = 0;
+
+      const matches = [];
+      while ((match = pattern.exec(processed)) !== null) {
+        matches.push(match);
+        totalValue += parseFloat(match[1]);
+        hasMatches = true;
+      }
+
+      for (const match of matches.reverse()) {
+        processed =
+          processed.slice(0, match.index) +
+          ' '.repeat(match[0].length) +
+          processed.slice(match.index + match[0].length);
+      }
+
+      if (totalValue > 0) duration[unit] += totalValue;
+    }
+
+    if (!hasMatches) {
+      const numberMatch = normalized.match(/^(\d+(?:\.\d+)?)$/);
+      if (numberMatch) {
+        duration.milliseconds = parseFloat(numberMatch[1]);
+        hasMatches = true;
+      }
+    }
+
+    if (!hasMatches) throw new Error(`Unable to parse duration from: "${entry}"`);
+
+    return new Duration(duration);
+  }
+
   get inMilliseconds() {
     return this._duration;
   }

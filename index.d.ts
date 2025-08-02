@@ -69,6 +69,32 @@ declare class Duration {
    */
   static fromDate(date: Date | string | number, now?: Date | string | number): Duration;
 
+  /**
+   * Parses a duration string in English and converts it to a `Duration` object.
+   * @param {string} duration - Duration string to parse (e.g., "1 hour 30 minutes", "2h 15m", "45 seconds")
+   * @returns A new Duration instance
+   * @throws {Error} When duration is not a string or cannot be parsed
+   *
+   * Supports various formats:
+   * - Short format: "1d 2h 3m 4s 5ms"
+   * - Medium format: "1 day 2 hrs 3 mins 4 secs 5 ms"
+   * - Long format: "1 day 2 hours 3 minutes 4 seconds 5 milliseconds"
+   * - Mixed formats: "1 day 2h 30 minutes"
+   * - Single units: "30 seconds", "1 hour", "100ms"
+   * - Decimal values: "1.5 hours", "2.5 days"
+   * - Plain numbers: "1000" (defaults to milliseconds)
+   *
+   * @example
+   * ```js
+   * Duration.parse("2 hours 30 minutes");
+   * Duration.parse("1d 12h 30m");
+   * Duration.parse("45 seconds");
+   * Duration.parse("1.5 hours");
+   * Duration.parse("1000"); // 1000 milliseconds
+   * ```
+   */
+  static parse(duration: string): Duration;
+
   /** Gets the whole milliseconds spanned by this Duration. */
   get inMilliseconds(): number;
 

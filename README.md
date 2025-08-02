@@ -1,10 +1,10 @@
 # Duration
 
-Interpret and format time durations in days, hours, minutes, seconds and milliseconds.
+Interpret, parse, and format time durations in days, hours, minutes, seconds and milliseconds.
 
 This utility gives you the ability to quickly interpret a span of time (duration) in a
-human-readable format. For instance, `7200` seconds are equivalent to `2` hours, which
-is way more friendly, right? So, this utility can and will help you achieve this fast.
+human-readable format (and vice-versa). For instance, `7200` seconds are equivalent to `2` hours,
+which is way more friendly, right? So, this utility can and will help you achieve this fast.
 
 ## Installation
 
@@ -43,9 +43,15 @@ Using **Node.js**:
 90
 > duration.format('%h hour(s) %m minute(s) ago')
 '1 hour(s) 30 minute(s) ago'
+> Duration.parse('1.5h').medium
+'1 hr 30 mins'
 ```
 
-When creating a new Duration instance, you can specify time values in different units.
+## Features
+
+### Creating Duration
+
+When creating a new `Duration`, you can specify time values in different units.
 All fields are optional:
 
 - `days`: Number of days
@@ -54,7 +60,17 @@ All fields are optional:
 - `seconds`: Number of seconds
 - `milliseconds`: Number of milliseconds
 
-You can also use the `format()` method to customize how the duration is displayed.
+```js
+const duration = new Duration({ hours: 1.5, minutes: 10, seconds: 120 }); // 1h 42 mins
+// or
+const duration = Duration.from(6120, 'sec'); // 1h 42 mins
+// or
+const duration = Duration.fromDate(Date.now()); // 0ms
+```
+
+### Formatting Duration
+
+You can use the `format()` method to customize how the duration is displayed.
 The method accepts a pattern string with the following placeholders:
 
 - `%d`: Number of days
@@ -65,9 +81,9 @@ The method accepts a pattern string with the following placeholders:
 
 Or use one of the predefined formats:
 
-- `'short'`: Compact format (e.g. "1h 30m")
-- `'medium'`: Medium format (e.g. "1 hr 30 mins")
-- `'long'`: Full format (e.g. "1 hour 30 minutes")
+- `'short'`: Compact format (e.g. '1h 30m')
+- `'medium'`: Medium format (e.g. '1 hr 30 mins')
+- `'long'`: Full format (e.g. '1 hour 30 minutes')
 
 For example:
 
@@ -75,6 +91,28 @@ For example:
 > const duration = Duration.from(5_400_000)
 > duration.format('%h hr %m min ago')
 '1 hr 30 min ago'
+```
+
+### Parsing Duration
+
+You can also create `Duration` objects by parsing English duration strings using the `parse()` method.
+It supports various formats:
+
+- Short format: `'1d 2h 3m 4s 5ms'`
+- Medium format: `'1 day 2 hrs 3 mins 4 secs 5 ms'`
+- Long format: `'1 day 2 hours 3 minutes 4 seconds 5 milliseconds'`
+- Mixed formats: `'1 day 2h 30 minutes'`
+- Single units: `'30 seconds'`, `'1 hour'`
+- Decimal values: `'1.5 hours'`, `'2.5 days'`
+- Plain numbers: `'1000'` (defaults to milliseconds)
+
+This makes it perfect for round-trip conversion:
+
+```js
+> const original = new Duration({ hours: 2, minutes: 30 });
+> const formatted = original.medium; // '2 hrs 30 mins'
+> const parsed = Duration.parse(formatted);
+> parsed.inMinutes === original.inMinutes; // true
 ```
 
 > Note that this utility does **not** currently support **locales**. All

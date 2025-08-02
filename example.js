@@ -7,3 +7,4 @@ console.log(duration.long);
 console.log(duration.minutes);
 console.log(duration.inMinutes);
 console.log(duration.format('%h hour(s) %m minute(s) ago'));
+console.log(Duration.parse('1.5h').medium);
