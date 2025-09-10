@@ -91,5 +91,5 @@ const main = () => {
   }
 };
 
-if (require.main === module || process.argv[1] === __filename) main();
+if (process.env.NODE_ENV !== 'test') main(); // skip in test environment
 module.exports = { run };

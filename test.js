@@ -397,17 +397,27 @@ test('CLI.run - respects DURATION_UNIT environment variable', () => {
 });
 
 test('CLI.process - help exits 0 and prints usage', () => {
+  const NODE_ENV = process.env.NODE_ENV;
+  process.env.NODE_ENV = 'dev';
+
   const cliPath = path.join(__dirname, 'cli.js');
   const { status, stdout, stderr } = spawnSync(process.execPath, [cliPath, '-h'], { encoding: 'utf8' });
   assert.equal(status, 0);
   assert.match(stdout, /Usage: duration/);
   assert.equal(stderr, '');
+
+  process.env.NODE_ENV = NODE_ENV;
 });
 
 test('CLI.process - missing args exits 1 and prints error', () => {
+  const NODE_ENV = process.env.NODE_ENV;
+  process.env.NODE_ENV = 'dev';
+
   const cliPath = path.join(__dirname, 'cli.js');
   const { status, stdout, stderr } = spawnSync(process.execPath, [cliPath], { encoding: 'utf8' });
   assert.equal(status, 1);
   assert.equal(stdout, '');
   assert.match(stderr, /Error: provide a duration value/);
+
+  process.env.NODE_ENV = NODE_ENV;
 });

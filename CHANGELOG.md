@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## 1.3.2 (2025-09-10)
+
+- Fix run issue with CLI (use node environment variables to manage conflicts)
+
 ## 1.3.1 (2025-09-10)
 
 - Print duration in tabular formats with `--table` flag
