@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 See [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## 1.3.1 (2025-09-10)
+
+- Print duration in tabular formats with `--table` flag
+- Apply minor improvements to CLI
+- Add test coverage for CLI
+
 ## 1.3.0 (2025-08-01)
 
 - Add `Duration.parse()` static method for parsing English duration strings

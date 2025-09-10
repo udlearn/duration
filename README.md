@@ -117,7 +117,8 @@ This makes it perfect for round-trip conversion:
 
 > Note that this utility does **not** currently support **locales**. All
 > output formats are in English only. If you need localized duration strings,
-> you'll need to implement that separately in your application.
+> you'll need to implement that separately in your application (check out the
+> `feature/locales` branch).
 
 ## Contributing
 

@@ -1,5 +1,8 @@
+const { spawnSync } = require('child_process');
+const path = require('path');
 const assert = require('assert');
 const Duration = require('./index');
+const cli = require('./cli');
 
 function test(description, callback) {
   try {
@@ -316,4 +319,95 @@ test('Duration.parse - error handling', () => {
   assert.throws(() => Duration.parse('invalid text'), Error, 'Unable to parse duration from: "invalid text"');
   assert.throws(() => Duration.parse('2 invalid units'), Error, 'Unable to parse duration from: "2 invalid units"');
   assert.throws(() => Duration.parse('hello world'), Error, 'Unable to parse duration from: "hello world"');
+});
+
+test('CLI.run - help flag outputs usage text', () => {
+  const output = cli.run(['-h']);
+  assert.match(output, /Usage: duration/);
+});
+
+test('CLI.run - version flag outputs package.json version', () => {
+  const output = cli.run(['-v']);
+  assert.equal(output, require('./package.json').version);
+});
+
+test('CLI.run - default short format with multiple values', () => {
+  const output = cli.run(['3600', '54000']);
+  assert.equal(output, '3s 600ms\n54s');
+});
+
+test('CLI.run - medium format', () => {
+  const output = cli.run(['-m', '3600']);
+  assert.equal(output, '3 secs 600 ms');
+});
+
+test('CLI.run - long format with unit seconds', () => {
+  const output = cli.run(['-l', '--unit=s', '3600']);
+  assert.equal(output, '1 hour');
+});
+
+test('CLI.run - negative durations show "ago"', () => {
+  const output = cli.run(['-s', '-500']);
+  assert.equal(output, '500ms ago');
+});
+
+test('CLI.run - json output', () => {
+  const output = cli.run(['--json', '1000']);
+  const json = JSON.parse(output);
+  assert.equal(json.seconds, 1);
+  assert.equal(json.milliseconds, 1000);
+});
+
+test('CLI.run - table output includes headers and values', () => {
+  const output = cli.run(['--table', '1000', '2000']);
+  assert.match(output, /milliseconds/);
+  assert.match(output, /seconds/);
+  assert.match(output, /\|\s*1000\s*\|\s*1\s*\|/);
+  assert.match(output, /\|\s*2000\s*\|\s*2\s*\|/);
+});
+
+test('CLI.run - errors when no values provided', () => {
+  try {
+    cli.run([]);
+    assert.fail('Expected an error for missing values');
+  } catch (err) {
+    assert.match(String(err), /provide a duration value/);
+  }
+});
+
+test('CLI.run - errors when non-number argument provided', () => {
+  try {
+    cli.run(['abc']);
+    assert.fail('Expected an error for non-number argument');
+  } catch (err) {
+    assert.match(String(err), /provide a number/);
+  }
+});
+
+test('CLI.run - respects DURATION_UNIT environment variable', () => {
+  const prev = process.env.DURATION_UNIT;
+  process.env.DURATION_UNIT = 's';
+  try {
+    const output = cli.run(['60']);
+    assert.equal(output, '1m');
+  } finally {
+    if (prev === undefined) delete process.env.DURATION_UNIT;
+    else process.env.DURATION_UNIT = prev;
+  }
+});
+
+test('CLI.process - help exits 0 and prints usage', () => {
+  const cliPath = path.join(__dirname, 'cli.js');
+  const { status, stdout, stderr } = spawnSync(process.execPath, [cliPath, '-h'], { encoding: 'utf8' });
+  assert.equal(status, 0);
+  assert.match(stdout, /Usage: duration/);
+  assert.equal(stderr, '');
+});
+
+test('CLI.process - missing args exits 1 and prints error', () => {
+  const cliPath = path.join(__dirname, 'cli.js');
+  const { status, stdout, stderr } = spawnSync(process.execPath, [cliPath], { encoding: 'utf8' });
+  assert.equal(status, 1);
+  assert.equal(stdout, '');
+  assert.match(stderr, /Error: provide a duration value/);
 });
