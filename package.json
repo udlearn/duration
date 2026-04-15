@@ -10,7 +10,7 @@
   "browser": "index.min.js",
   "types": "index.d.ts",
   "files": ["index.js", "index.min.js", "index.d.ts", "duration", "man/"],
-  "bin": {"duration": "./duration"},
+  "bin": {"duration": "./duration", "drn": "./duration"},
   "directories": { "man": "./man" },
   "man": "./man/duration.1",
   "scripts": {
@@ -28,6 +28,6 @@
     "@rollup/plugin-terser": "^0.4.4",
     "prettier": "3.5.3",
     "rollup": "^4.40.0",
-    "yargs-parser": "^21.1.1"
+    "yargs-parser": "~21.1.1"
   }
 }

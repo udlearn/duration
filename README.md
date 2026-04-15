@@ -12,6 +12,17 @@ which is way more friendly, right? So, this utility can and will help you achiev
 npm i @udlearn/duration
 ```
 
+### Without Node.js (shell or static binary)
+
+A POSIX `sh` implementation (with `awk`) lives in [`scripts/duration`](scripts/duration). A matching static binary can be built from the Go sources under [`cmd/duration`](cmd/duration).
+
+```bash
+# Prebuilt release tarball when available, otherwise copies the shell script + awk helper:
+curl -fsSL https://raw.githubusercontent.com/udlearn/duration/main/install.sh | sh
+```
+
+Install location defaults to `~/.local/bin`; set `PREFIX=/usr/local/bin` (or another directory on your `PATH`) to change it. Use `DURATION_FORCE_SCRIPT=1` to skip downloading a binary. See [`man/duration.1`](man/duration.1) for options and examples.
+
 ## Usage
 
 Using **CLI**:
@@ -110,9 +121,9 @@ This makes it perfect for round-trip conversion:
 
 ```js
 > const original = new Duration({ hours: 2, minutes: 30 });
-> const formatted = original.medium; // '2 hrs 30 mins'
-> const parsed = Duration.parse(formatted);
-> parsed.inMinutes === original.inMinutes; // true
+> const parsed = Duration.parse(original.medium);
+> parsed.inMinutes === original.inMinutes;
+true
 ```
 
 > Note that this utility does **not** currently support **locales**. All

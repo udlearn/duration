@@ -1,0 +1,149 @@
+.TH DURATION 1 "April 2026" "@udlearn/duration" "User Commands"
+.SH NAME
+duration \- interpret numeric time spans as human\-readable durations
+.SH SYNOPSIS
+.B duration
+.RB [ \-s | \-m | \-l ]
+.RB [ \-\-json | \-\-table ]
+.RB [ \-u
+.IR unit " | " \-\-unit = unit ]
+.RI < value " .\|.\|.\|>"
+.br
+.B duration
+.RB [ \-h | \-\-help ]
+.br
+.B duration
+.RB [ \-v | \-\-version ]
+.SH DESCRIPTION
+.B duration
+reads one or more numeric values and prints each as a duration in days, hours, minutes, seconds, and milliseconds.
+Values are interpreted in
+.B milliseconds
+unless
+.B \-\-unit
+or the
+.B DURATION_UNIT
+environment variable selects another scale (see
+.BR UNITS ).
+.PP
+This manual documents the standalone implementations (POSIX shell and optional static binary). The npm package also ships a Node\-based CLI with the same flags.
+.SH OPTIONS
+.TP
+.BR \-s
+Short format (e.g.\&
+.BR "1h 30m" ).
+.TP
+.BR \-m
+Medium format (e.g.\&
+.BR "1 hr 30 mins" ).
+.TP
+.BR \-l
+Long format (e.g.\&
+.BR "1 hour 30 minutes" ).
+.TP
+.B \-\-json
+Print each value as a JSON object with total
+.BR milliseconds ,
+.BR seconds ,
+.BR minutes ,
+.BR hours ,
+and
+.B days
+(floating\-point totals, same as the library\(cqs
+.BR toJson() ).
+.TP
+.B \-\-table
+Print a table of those fields for all values.
+.TP
+.BI \-u " unit" ", " \-\-unit = unit
+Input unit for every positional value (default
+.BR ms ).
+.TP
+.BR \-h ", " \-\-help
+Show usage and exit 0.
+.TP
+.BR \-v ", " \-\-version
+Print version and exit 0.
+.PP
+More than one of
+.BR \-s ", " \-m ", " \-l
+may be given; each selected format is applied in order, one line per value per format (see
+.BR EXAMPLES ).
+.SH UNITS
+Recognized unit names (case\-insensitive) include:
+.BR ms ", " milli ", " millis ", " millisecond ", " milliseconds ;
+.BR s ", " sec ", " secs ", " second ", " seconds ;
+.BR m ", " min ", " mins ", " minute ", " minutes ;
+.BR h ", " hr ", " hrs ", " hour ", " hours ;
+.BR d ", " day ", " days .
+Unknown unit names fall back to milliseconds.
+.SH ENVIRONMENT
+.TP
+.B DURATION_UNIT
+Default input unit when
+.B \-\-unit
+is not set.
+.SH EXAMPLES
+Interpret two values as milliseconds (default short format):
+.PP
+.nf
+$ duration 3600 54000
+3s 600ms
+54s
+.fi
+.PP
+Medium format:
+.PP
+.nf
+$ duration \-m 3600
+3 secs 600 ms
+.fi
+.PP
+Long format with values given in seconds:
+.PP
+.nf
+$ duration \-l \-\-unit=s 3600
+1 hour
+.fi
+.PP
+Negative values are shown as a positive duration followed by
+.BR \(dq ago \(dq :
+.PP
+.nf
+$ duration \-s \-500
+500ms ago
+.fi
+.SH INSTALLATION
+.SS Static binary (Linux, macOS, Windows)
+Use the installer (set
+.B PREFIX
+to change the install directory, default
+.BR ~/.local/bin ):
+.PP
+.nf
+curl \-fsSL https://raw.githubusercontent.com/udlearn/duration/main/install.sh | sh
+.fi
+.PP
+Or download a release archive for your OS and architecture from the project releases page and place the
+.B duration
+executable on your
+.BR PATH .
+.SS POSIX shell script
+Copy
+.B scripts/duration
+from the repository, mark it executable
+.RB ( chmod +x ),
+and run it with a POSIX
+.B sh
+that provides
+.BR awk
+(e.g.\& Linux, macOS, Git Bash, MSYS2, or WSL).
+.SH SEE ALSO
+.BR man (1),
+.BR awk (1).
+.PP
+npm package:
+.UR https://www.npmjs.com/package/@udlearn/duration
+.UE
+.SH AUTHOR
+Ralph Florent and contributors.
