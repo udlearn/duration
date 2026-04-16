@@ -16,8 +16,8 @@ npm i @udlearn/duration
 > from the npm registry with `npm i -g @udlearn/duration`. If you clone this repo instead, run
 > `npm run build` first so the `duration` bin is generated.
 >
-> Additionally, a standalone CLI (no Node required) can be installed via GitHub Releases, the
-> curl-based installer, the shell + awk implementation, or by building from Go, as documented in
+> Additionally, a standalone CLI (no Node required) can be installed via Homebrew, GitHub
+> Releases, the curl-based installer, the shell + awk implementation, or by building from Go — see
 > **[docs/INSTALL.md](docs/INSTALL.md)**.
 
 ## Usage

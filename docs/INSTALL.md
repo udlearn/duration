@@ -2,8 +2,9 @@
 
 This guide is for users who want the `duration` CLI **without installing Node.js**. The npm package remains the primary distribution for the **library** (`require('@udlearn/duration')`); see the [README](../README.md) for that.
 
-You have three practical options:
+You have several practical options:
 
+0. **Homebrew (tap)** — build the Go CLI from source with Go; installs `duration` and the man page.
 1. **curl installer** — tries a GitHub Release binary for your OS/arch, then falls back to the POSIX shell + awk implementation.
 2. **GitHub Release tarball** — download and unpack a prebuilt binary yourself.
 3. **From source** — build the Go CLI locally, or run the shell script from a git checkout.
@@ -11,6 +12,15 @@ You have three practical options:
 The command-line interface matches the Node-based CLI described in [`man/duration.1`](../man/duration.1) (also shipped in the npm package).
 
 ---
+
+## 0. homebrew (macOS only)
+
+See [homebrew-duration](https://github.com/udlearn/homebrew-duration) to learn more about this.
+
+```bash
+brew tap udlearn/duration
+brew install duration
+```
 
 ## 1. curl installer
 
