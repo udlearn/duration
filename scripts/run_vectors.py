@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run testdata/cli_vectors.json against scripts/duration (POSIX shell CLI)."""
+"""Run test/fixtures/cli_vectors.json against scripts/duration (POSIX shell CLI)."""
 from __future__ import annotations
 
 import json
@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-VEC = ROOT / "testdata" / "cli_vectors.json"
+VEC = ROOT / "test" / "fixtures" / "cli_vectors.json"
 CLI = ROOT / "scripts" / "duration"
 
 

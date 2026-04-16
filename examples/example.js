@@ -1,4 +1,4 @@
-const Duration = require('./index');
+const Duration = require('../index');
 
 const duration = new Duration({ hours: 1.5 });
 console.log(duration.short);

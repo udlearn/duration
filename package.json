@@ -14,11 +14,11 @@
   "directories": { "man": "./man" },
   "man": "./man/duration.1",
   "scripts": {
-    "start": "node example.js",
+    "start": "node examples/example.js",
     "cli": "node cli.js -h",
     "format": "prettier --write '**/*.(j|t)s'",
     "build": "rollup -c",
-    "test": "NODE_ENV=test node test.js",
+    "test": "NODE_ENV=test node test/node.test.js",
     "prepublish": "npm run format && npm run build"
   },
   "devDependencies": {
