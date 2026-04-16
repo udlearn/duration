@@ -1,0 +1,183 @@
+#!/usr/bin/env sh
+# POSIX duration CLI (human-readable formats via awk). See man/duration.1.
+VERSION="1.3.2"
+
+usage_line='Usage: duration [options] <milliseconds...>'
+
+AWK_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+AWK_SRC="$AWK_DIR/_duration.awk"
+
+help_text="Usage: duration [options] <milliseconds...>
+
+Options:
+-s              Display duration in short format (e.g., 1h 30m).
+-m              Display duration in medium format (e.g., 1 hr 30 mins).
+-l              Display duration in long format (e.g., 1 hour 30 minutes).
+--json          Display duration in JSON format.
+--table         Display duration in tabular format.
+-u, --unit      Read duration values in the specified unit
+                (default: milliseconds; e.g., ms, s, m, h, d).
+-v, --version   Show version number.
+-h, --help      Show this help message.
+
+Examples:
+1. display durations in short format:
+\$ duration 3600 54000
+> 3s 600ms
+> 54s
+
+2. display duration in medium format:
+\$ duration -m 3600
+> 3 secs 600ms
+
+3. display duration read in seconds in long format:
+\$ duration -l --unit=s 3600
+> 1 hour
+
+Visit https://www.npmjs.com/package/@udlearn/duration for more info."
+
+is_number() {
+	awk -v x="$1" 'BEGIN {
+		if (length(x) == 0 || x == "-") exit 1
+		if (match(x, /^-?([0-9]+\.?[0-9]*|\.[0-9]+)([Ee][+-]?[0-9]+)?$/) == 0) exit 1
+		y = x + 0
+		if (y != y) exit 1
+		exit 0
+	}'
+}
+
+vals=
+NL='
+'
+append_val() {
+	if is_number "$1"; then
+		if [ -z "$vals" ]; then vals="$1"; else vals="$vals$NL$1"; fi
+	else
+		printf '%s\n' "Error: provide a number as an argument.
+
+$usage_line" >&2
+		exit 1
+	fi
+}
+
+unit="${DURATION_UNIT:-}"
+pending_u=0
+want_help=0
+want_version=0
+want_json=0
+want_table=0
+want_s=0
+want_m=0
+want_l=0
+
+while [ "$#" -gt 0 ]; do
+	if [ "$pending_u" -eq 1 ]; then
+		unit="$1"
+		pending_u=0
+		shift
+		continue
+	fi
+	case $1 in
+	-h | --help)
+		want_help=1
+		shift
+		;;
+	-v | --version)
+		want_version=1
+		shift
+		;;
+	--json)
+		want_json=1
+		shift
+		;;
+	--table)
+		want_table=1
+		shift
+		;;
+	--unit=*)
+		unit="${1#*=}"
+		shift
+		;;
+	-u | --unit)
+		pending_u=1
+		shift
+		;;
+	--)
+		shift
+		while [ "$#" -gt 0 ]; do
+			append_val "$1"
+			shift
+		done
+		break
+		;;
+	-*)
+		if [ "$1" != "-" ] && is_number "$1"; then
+			append_val "$1"
+			shift
+			continue
+		fi
+		opts=${1#-}
+		while [ -n "$opts" ]; do
+			c=$(printf '%s' "$opts" | cut -c1)
+			opts=$(printf '%s' "$opts" | cut -c2-)
+			case $c in
+			h) want_help=1 ;;
+			v) want_version=1 ;;
+			s) want_s=1 ;;
+			m) want_m=1 ;;
+			l) want_l=1 ;;
+			*)
+				printf '%s\n' "Error: provide a number as an argument.
+
+$usage_line" >&2
+				exit 1
+				;;
+			esac
+		done
+		shift
+		;;
+	*)
+		append_val "$1"
+		shift
+		;;
+	esac
+done
+
+if [ "$pending_u" -eq 1 ]; then
+	printf '%s\n' "Error: provide a number as an argument.
+
+$usage_line" >&2
+	exit 1
+fi
+
+if [ "$want_help" -eq 1 ]; then
+	printf '%s\n' "$help_text"
+	exit 0
+fi
+if [ "$want_version" -eq 1 ]; then
+	printf '%s\n' "$VERSION"
+	exit 0
+fi
+
+if [ -z "$vals" ]; then
+	printf '%s\n' "Error: provide a duration value as an argument.
+
+$usage_line" >&2
+	exit 1
+fi
+
+mode=format
+[ "$want_json" -eq 1 ] && mode=json
+[ "$want_table" -eq 1 ] && mode=table
+
+ws=0
+wm=0
+wl=0
+[ "$want_s" -eq 1 ] && ws=1
+[ "$want_m" -eq 1 ] && wm=1
+[ "$want_l" -eq 1 ] && wl=1
+
+printf '%s\n' "$vals" | awk -v mode="$mode" -v unit="$unit" \
+	-v want_short="$ws" -v want_medium="$wm" -v want_long="$wl" \
+	-f "$AWK_SRC"
+exit "$?"
