@@ -50,13 +50,13 @@ PREFIX=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/udlearn/durat
 
 ### Environment variables
 
-| Variable | Meaning |
-|----------|---------|
-| `VERSION` | Release **without** the `v` prefix (default: see `scripts/install.sh`, kept in sync with the package). |
-| `PREFIX` | Install directory (default: `$HOME/.local/bin`). |
-| `REPO` | GitHub `owner/repo` slug (default: `udlearn/duration`). |
-| `DURATION_FORCE_SCRIPT` | If `1`, skip the binary download and install only the shell + awk files. |
-| `DURATION_RAW_REF` | Git ref for raw GitHub URLs (e.g. `main`) when not using the default tag-based raw URL. |
+| Variable                | Meaning                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| `VERSION`               | Release **without** the `v` prefix (default: see `scripts/install.sh`, kept in sync with the package). |
+| `PREFIX`                | Install directory (default: `$HOME/.local/bin`).                                                       |
+| `REPO`                  | GitHub `owner/repo` slug (default: `udlearn/duration`).                                                |
+| `DURATION_FORCE_SCRIPT` | If `1`, skip the binary download and install only the shell + awk files.                               |
+| `DURATION_RAW_REF`      | Git ref for raw GitHub URLs (e.g. `main`) when not using the default tag-based raw URL.                |
 
 If a release tag does not exist yet, the installer falls back to the **`main`** branch for the shell files.
 
