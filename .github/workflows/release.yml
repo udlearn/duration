@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22.x"
+
+      - name: Build release tarballs
+        run: |
+          set -eux
+          VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p dist
+          build_one() {
+            goos=$1
+            goarch=$2
+            bin=duration
+            if [ "$goos" = "windows" ]; then bin=duration.exe; fi
+            out="duration_${VERSION}_${goos}_${goarch}.tar.gz"
+            GOOS="$goos" GOARCH="$goarch" go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o "$bin" ./cmd/duration
+            tar -czvf "dist/${out}" "$bin"
+            rm -f "$bin"
+          }
+          build_one linux amd64
+          build_one linux arm64
+          build_one darwin amd64
+          build_one darwin arm64
+          build_one windows amd64
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

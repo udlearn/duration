@@ -12,19 +12,15 @@ which is way more friendly, right? So, this utility can and will help you achiev
 npm i @udlearn/duration
 ```
 
+> **Note** that this package includes a Node CLI that can be made available globally when you install
+> from the npm registry with `npm i -g @udlearn/duration`. If you clone this repo instead, run
+> `npm run build` first so the `duration` bin is generated.
+>
+> Additionally, a standalone CLI (no Node required) can be installed via Homebrew, GitHub
+> Releases, the curl-based installer, the shell + awk implementation, or by building from Go — see
+> **[docs/INSTALL.md](docs/INSTALL.md)**.
+
 ## Usage
-
-Using **CLI**:
-
-```bash
-$ duration 3600
-> 3s 600ms
-$ duration -m --unit=sec 3660
-> 1 hr 1 min
-```
-
-> You may use `DURATION_UNIT` as environment variable to avoid setting the `--unit` (or `-u`)
-> option every time.
 
 Using **Node.js**:
 
@@ -46,6 +42,18 @@ Using **Node.js**:
 > Duration.parse('1.5h').medium
 '1 hr 30 mins'
 ```
+
+Using **CLI**:
+
+```bash
+$ duration 3600
+> 3s 600ms
+$ duration -m --unit=sec 3660
+> 1 hr 1 min
+```
+
+> You may use `DURATION_UNIT` as environment variable to avoid setting the `--unit` (or `-u`)
+> option every time.
 
 ## Features
 
@@ -110,9 +118,9 @@ This makes it perfect for round-trip conversion:
 
 ```js
 > const original = new Duration({ hours: 2, minutes: 30 });
-> const formatted = original.medium; // '2 hrs 30 mins'
-> const parsed = Duration.parse(formatted);
-> parsed.inMinutes === original.inMinutes; // true
+> const parsed = Duration.parse(original.medium);
+> parsed.inMinutes === original.inMinutes;
+true
 ```
 
 > Note that this utility does **not** currently support **locales**. All

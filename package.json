@@ -10,15 +10,15 @@
   "browser": "index.min.js",
   "types": "index.d.ts",
   "files": ["index.js", "index.min.js", "index.d.ts", "duration", "man/"],
-  "bin": {"duration": "./duration"},
+  "bin": {"duration": "./duration", "drn": "./duration"},
   "directories": { "man": "./man" },
   "man": "./man/duration.1",
   "scripts": {
-    "start": "node example.js",
+    "start": "node examples/example.js",
     "cli": "node cli.js -h",
     "format": "prettier --write '**/*.(j|t)s'",
     "build": "rollup -c",
-    "test": "NODE_ENV=test node test.js",
+    "test": "NODE_ENV=test node test/node.test.js",
     "prepublish": "npm run format && npm run build"
   },
   "devDependencies": {
@@ -28,6 +28,6 @@
     "@rollup/plugin-terser": "^0.4.4",
     "prettier": "3.5.3",
     "rollup": "^4.40.0",
-    "yargs-parser": "^21.1.1"
+    "yargs-parser": "~21.1.1"
   }
 }

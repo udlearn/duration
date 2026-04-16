@@ -1,20 +1,22 @@
 const { spawnSync } = require('child_process');
 const path = require('path');
 const assert = require('assert');
-const Duration = require('./index');
-const cli = require('./cli');
+
+const repoRoot = path.join(__dirname, '..');
+const Duration = require(path.join(repoRoot, 'index'));
+const cli = require(path.join(repoRoot, 'cli'));
 
 function test(description, callback) {
   try {
     callback();
-    console.log(`${description} - passed ✅`);
+    console.log(`${description} - passed \u2705`);
   } catch (error) {
-    console.error(`${description} - failed ❌`, error);
+    console.error(`${description} - failed \u274C`, error);
   }
 }
 
 test('default export', () => {
-  const module = require('./index');
+  const module = require(path.join(repoRoot, 'index'));
   const duration = new module.default({ milliseconds: 7200000 });
   assert.equal(duration.inHours, 2);
   assert.equal(duration.inMinutes, 120);
@@ -328,7 +330,7 @@ test('CLI.run - help flag outputs usage text', () => {
 
 test('CLI.run - version flag outputs package.json version', () => {
   const output = cli.run(['-v']);
-  assert.equal(output, require('./package.json').version);
+  assert.equal(output, require(path.join(repoRoot, 'package.json')).version);
 });
 
 test('CLI.run - default short format with multiple values', () => {
@@ -400,7 +402,7 @@ test('CLI.process - help exits 0 and prints usage', () => {
   const NODE_ENV = process.env.NODE_ENV;
   process.env.NODE_ENV = 'dev';
 
-  const cliPath = path.join(__dirname, 'cli.js');
+  const cliPath = path.join(repoRoot, 'cli.js');
   const { status, stdout, stderr } = spawnSync(process.execPath, [cliPath, '-h'], { encoding: 'utf8' });
   assert.equal(status, 0);
   assert.match(stdout, /Usage: duration/);
@@ -413,7 +415,7 @@ test('CLI.process - missing args exits 1 and prints error', () => {
   const NODE_ENV = process.env.NODE_ENV;
   process.env.NODE_ENV = 'dev';
 
-  const cliPath = path.join(__dirname, 'cli.js');
+  const cliPath = path.join(repoRoot, 'cli.js');
   const { status, stdout, stderr } = spawnSync(process.execPath, [cliPath], { encoding: 'utf8' });
   assert.equal(status, 1);
   assert.equal(stdout, '');
