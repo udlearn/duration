@@ -55,6 +55,8 @@ $ duration -m --unit=sec 3660
 > You may use `DURATION_UNIT` as environment variable to avoid setting the `--unit` (or `-u`)
 > option every time.
 
+**[Try it in the browser](https://udlearn-duration.lovable.app/playground)**.
+
 ## Features
 
 ### Creating Duration

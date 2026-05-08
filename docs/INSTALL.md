@@ -4,16 +4,16 @@ This guide is for users who want the `duration` CLI **without installing Node.js
 
 You have several practical options:
 
-0. **Homebrew (tap)** — build the Go CLI from source with Go; installs `duration` and the man page.
-1. **curl installer** — tries a GitHub Release binary for your OS/arch, then falls back to the POSIX shell + awk implementation.
-2. **GitHub Release tarball** — download and unpack a prebuilt binary yourself.
-3. **From source** — build the Go CLI locally, or run the shell script from a git checkout.
+1. **Homebrew (tap)** — build the Go CLI from source with Go; installs `duration` and the man page.
+2. **curl installer** — tries a GitHub Release binary for your OS/arch, then falls back to the POSIX shell + awk implementation.
+3. **GitHub Release tarball** — download and unpack a prebuilt binary yourself.
+4. **From source** — build the Go CLI locally, or run the shell script from a git checkout.
 
 The command-line interface matches the Node-based CLI described in [`man/duration.1`](../man/duration.1) (also shipped in the npm package).
 
 ---
 
-## 0. homebrew (macOS only)
+## 1. homebrew (macOS only)
 
 See [homebrew-duration](https://github.com/udlearn/homebrew-duration) to learn more about this.
 
@@ -22,18 +22,18 @@ brew tap udlearn/duration
 brew install duration
 ```
 
-## 1. curl installer
+## 2. curl installer
 
-The root [`install.sh`](../install.sh) is a tiny wrapper; the implementation is [`scripts/install.sh`](../scripts/install.sh).
+The curl installer implementation is [`scripts/install.sh`](../scripts/install.sh).
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/udlearn/duration/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/udlearn/duration/main/scripts/install.sh | sh
 ```
 
 By default this installs into `~/.local/bin`. Use another directory on your `PATH`:
 
 ```bash
-PREFIX=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/udlearn/duration/main/install.sh | sh
+PREFIX=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/udlearn/duration/main/scripts/install.sh | sh
 ```
 
 ### What the installer does
@@ -62,7 +62,7 @@ If a release tag does not exist yet, the installer falls back to the **`main`** 
 
 ---
 
-## 2. Manual download from GitHub Releases
+## 3. Manual download from GitHub Releases
 
 1. Open [Releases](https://github.com/udlearn/duration/releases) and pick a version.
 2. Download `duration_<version>_<os>_<arch>.tar.gz` for your platform.
@@ -72,7 +72,7 @@ No separate checksum file is required for basic use; verify integrity out-of-ban
 
 ---
 
-## 3. POSIX shell + awk (from the repo or npm tarball)
+## 4. POSIX shell + awk (from the repo or npm tarball)
 
 If you have a POSIX `sh` and `awk` (Linux, macOS, Git Bash, MSYS2, WSL):
 
@@ -84,7 +84,7 @@ If you have a POSIX `sh` and `awk` (Linux, macOS, Git Bash, MSYS2, WSL):
 
 ---
 
-## 4. Build the Go CLI from source
+## 5. Build the Go CLI from source
 
 Requires [Go](https://go.dev/) 1.21+:
 
