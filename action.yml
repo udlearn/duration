@@ -1,0 +1,50 @@
+name: Duration
+description: Format a numeric duration in human-readable text (short, medium, long, JSON, or table).
+author: Ralph Florent
+
+branding:
+  icon: clock
+  color: blue
+
+inputs:
+  value:
+    description: Numeric duration value (e.g. 5400000 or 3600).
+    required: true
+  unit:
+    description: "Unit for value: ms, s, m, h, d (default: ms)."
+    required: false
+    default: ms
+  format:
+    description: "Output format: short, medium, long, json, table (default: short)."
+    required: false
+    default: short
+
+outputs:
+  result:
+    description: Formatted duration string from the CLI.
+    value: ${{ steps.run.outputs.result }}
+
+runs:
+  using: composite
+  steps:
+    - id: run
+      shell: bash
+      env:
+        DURATION_VALUE: ${{ inputs.value }}
+        DURATION_UNIT: ${{ inputs.unit }}
+        DURATION_FORMAT: ${{ inputs.format }}
+      run: |
+        flags="--unit=$DURATION_UNIT"
+        case "$DURATION_FORMAT" in
+          short)  flags="$flags -s" ;;
+          medium) flags="$flags -m" ;;
+          long)   flags="$flags -l" ;;
+          json)   flags="$flags --json" ;;
+          table)  flags="$flags --table" ;;
+          *)      echo "::error::Unknown format: $DURATION_FORMAT"; exit 1 ;;
+        esac
+
+        output=$(node "$GITHUB_ACTION_PATH/duration" $flags "$DURATION_VALUE")
+        echo "result<<EOF" >> "$GITHUB_OUTPUT"
+        echo "$output" >> "$GITHUB_OUTPUT"
+        echo "EOF" >> "$GITHUB_OUTPUT"

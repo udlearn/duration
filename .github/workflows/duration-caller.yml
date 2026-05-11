@@ -1,0 +1,31 @@
+name: Duration caller (example)
+
+on:
+  workflow_dispatch:
+    inputs:
+      value:
+        description: Numeric duration value.
+        required: true
+        default: "5400000"
+      unit:
+        description: "Unit (ms, s, m, h, d)."
+        required: false
+        default: ms
+      format:
+        description: "Format (short, medium, long, json, table)."
+        required: false
+        default: short
+
+jobs:
+  call:
+    uses: ./.github/workflows/duration-reusable.yml
+    with:
+      value: ${{ inputs.value }}
+      unit: ${{ inputs.unit }}
+      format: ${{ inputs.format }}
+
+  print:
+    needs: call
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Formatted duration -> ${{ needs.call.outputs.result }}"

@@ -1,0 +1,56 @@
+name: Action smoke test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - action.yml
+      - duration
+      - .github/workflows/action-smoke.yml
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Format (short, milliseconds)
+        uses: ./
+        id: short
+        with:
+          value: '5400000'
+
+      - name: Format (medium, seconds)
+        uses: ./
+        id: medium
+        with:
+          value: '3600'
+          unit: s
+          format: medium
+
+      - name: Format (long)
+        uses: ./
+        id: long
+        with:
+          value: '90'
+          unit: m
+          format: long
+
+      - name: Format (json)
+        uses: ./
+        id: json
+        with:
+          value: '7200000'
+          format: json
+
+      - name: Verify outputs
+        run: |
+          echo "short:  ${{ steps.short.outputs.result }}"
+          echo "medium: ${{ steps.medium.outputs.result }}"
+          echo "long:   ${{ steps.long.outputs.result }}"
+          printf 'json:   %s\n' '${{ steps.json.outputs.result }}'
+
+          [[ "${{ steps.short.outputs.result }}" == "1h 30m" ]] || { echo "::error::short mismatch"; exit 1; }
+          [[ "${{ steps.medium.outputs.result }}" == "1 hr" ]] || { echo "::error::medium mismatch"; exit 1; }
+          [[ "${{ steps.long.outputs.result }}" == "1 hour 30 minutes" ]] || { echo "::error::long mismatch"; exit 1; }
+          grep -q '"milliseconds"' <<< '${{ steps.json.outputs.result }}' || { echo "::error::json missing key"; exit 1; }

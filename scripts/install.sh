@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 # Install the duration CLI: tries a release tarball first, then falls back to the POSIX shell + awk build.
 #
-# Usage (either URL works — root install.sh is a thin wrapper):
-#   curl -fsSL https://raw.githubusercontent.com/udlearn/duration/main/install.sh | sh
+# Usage:
 #   curl -fsSL https://raw.githubusercontent.com/udlearn/duration/main/scripts/install.sh | sh
+#
 # Environment:
 #   VERSION   — release tag without v (default: 1.3.2)
 #   REPO      — github.com slug (default: udlearn/duration)

@@ -55,6 +55,8 @@ $ duration -m --unit=sec 3660
 > You may use `DURATION_UNIT` as environment variable to avoid setting the `--unit` (or `-u`)
 > option every time.
 
+**[Try it in the browser](https://udlearn-duration.lovable.app/playground)**.
+
 ## Features
 
 ### Creating Duration
@@ -127,6 +129,34 @@ true
 > output formats are in English only. If you need localized duration strings,
 > you'll need to implement that separately in your application (check out the
 > `feature/locales` branch).
+
+## Docker
+
+The `ralflorent/duration` image packages the Go CLI as a tiny static binary (~5 MB) — no Node required:
+
+```bash
+docker run --rm ralflorent/duration -m --unit=s 3600
+# => 1 hr
+```
+
+See **[docs/DOCKER.md](docs/DOCKER.md)** for all options, local builds, and publishing.
+
+## GitHub Action
+
+Use `udlearn/duration` directly in your CI workflows to format numeric durations — no install step required:
+
+```yaml
+- uses: udlearn/duration@v1
+  id: fmt
+  with:
+    value: "5400000"
+    format: medium
+
+- run: echo "${{ steps.fmt.outputs.result }}"
+  # => 1 hr 30 mins
+```
+
+See **[docs/ACTION.md](docs/ACTION.md)** for full inputs, outputs, and advanced usage.
 
 ## Contributing
 

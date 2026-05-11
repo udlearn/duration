@@ -1,0 +1,38 @@
+name: Format duration (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      value:
+        description: Numeric duration value.
+        required: true
+        type: string
+      unit:
+        description: "Unit for value (ms, s, m, h, d)."
+        required: false
+        type: string
+        default: ms
+      format:
+        description: "Output format (short, medium, long, json, table)."
+        required: false
+        type: string
+        default: short
+    outputs:
+      result:
+        description: Formatted duration string.
+        value: ${{ jobs.format.outputs.result }}
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.duration.outputs.result }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./
+        id: duration
+        with:
+          value: ${{ inputs.value }}
+          unit: ${{ inputs.unit }}
+          format: ${{ inputs.format }}
