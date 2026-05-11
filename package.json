@@ -11,7 +11,7 @@
   "types": "index.d.ts",
   "files": ["index.js", "index.min.js", "index.d.ts", "duration", "man/"],
   "bin": {"duration": "./duration", "drn": "./duration"},
-  "directories": { "man": "./man" },
+  "directories": {"man": "./man", "doc": "./docs", "test": "./test"},
   "man": "./man/duration.1",
   "scripts": {
     "start": "node examples/example.js",
@@ -25,7 +25,7 @@
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-terser": "^1.0.0",
     "prettier": "3.5.3",
     "rollup": "^4.40.0",
     "yargs-parser": "~21.1.1"
