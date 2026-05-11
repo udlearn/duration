@@ -1,4 +1,4 @@
-name: Duration
+name: udlearn-duration
 description: Format a numeric duration in human-readable text (short, medium, long, JSON, or table).
 author: Ralph Florent
 
