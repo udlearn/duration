@@ -48,9 +48,9 @@ jobs:
           echo "short:  ${{ steps.short.outputs.result }}"
           echo "medium: ${{ steps.medium.outputs.result }}"
           echo "long:   ${{ steps.long.outputs.result }}"
-          echo "json:   ${{ steps.json.outputs.result }}"
+          printf 'json:   %s\n' '${{ steps.json.outputs.result }}'
 
           [[ "${{ steps.short.outputs.result }}" == "1h 30m" ]] || { echo "::error::short mismatch"; exit 1; }
           [[ "${{ steps.medium.outputs.result }}" == "1 hr" ]] || { echo "::error::medium mismatch"; exit 1; }
           [[ "${{ steps.long.outputs.result }}" == "1 hour 30 minutes" ]] || { echo "::error::long mismatch"; exit 1; }
-          echo "${{ steps.json.outputs.result }}" | grep -q '"milliseconds"' || { echo "::error::json missing key"; exit 1; }
+          grep -q '"milliseconds"' <<< '${{ steps.json.outputs.result }}' || { echo "::error::json missing key"; exit 1; }
