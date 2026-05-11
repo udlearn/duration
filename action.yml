@@ -44,7 +44,7 @@ runs:
           *)      echo "::error::Unknown format: $DURATION_FORMAT"; exit 1 ;;
         esac
 
-        output=$(node "$GITHUB_ACTION_PATH/duration" $flags -- "$DURATION_VALUE")
+        output=$(node "$GITHUB_ACTION_PATH/duration" $flags "$DURATION_VALUE")
         echo "result<<EOF" >> "$GITHUB_OUTPUT"
         echo "$output" >> "$GITHUB_OUTPUT"
         echo "EOF" >> "$GITHUB_OUTPUT"
