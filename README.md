@@ -130,6 +130,23 @@ true
 > you'll need to implement that separately in your application (check out the
 > `feature/locales` branch).
 
+## GitHub Action
+
+Use `udlearn/duration` directly in your CI workflows to format numeric durations — no install step required:
+
+```yaml
+- uses: udlearn/duration@v1
+  id: fmt
+  with:
+    value: "5400000"
+    format: medium
+
+- run: echo "${{ steps.fmt.outputs.result }}"
+  # => 1 hr 30 mins
+```
+
+See **[docs/ACTION.md](docs/ACTION.md)** for full inputs, outputs, and advanced usage.
+
 ## Contributing
 
 Please follow the [Contributing](CONTRIBUTING.md) guidelines if you wish to collaborate
