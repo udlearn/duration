@@ -1,0 +1,54 @@
+name: Docker smoke test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - go.mod
+      - go.sum
+      - cmd/duration/**
+      - .github/workflows/docker-smoke.yml
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: duration:smoke
+
+      - name: Verify --version
+        run: docker run --rm duration:smoke --version
+
+      - name: Format (short, milliseconds)
+        run: |
+          result=$(docker run --rm duration:smoke 5400000)
+          echo "short: $result"
+          [[ "$result" == "1h 30m" ]] || { echo "::error::short mismatch: $result"; exit 1; }
+
+      - name: Format (medium, seconds)
+        run: |
+          result=$(docker run --rm duration:smoke -m --unit=s 3600)
+          echo "medium: $result"
+          [[ "$result" == "1 hr" ]] || { echo "::error::medium mismatch: $result"; exit 1; }
+
+      - name: Format (long, minutes)
+        run: |
+          result=$(docker run --rm duration:smoke -l --unit=m 90)
+          echo "long: $result"
+          [[ "$result" == "1 hour 30 minutes" ]] || { echo "::error::long mismatch: $result"; exit 1; }
+
+      - name: Format (json)
+        run: |
+          result=$(docker run --rm duration:smoke --json 7200000)
+          echo "json: $result"
+          echo "$result" | grep -q '"milliseconds"' || { echo "::error::json missing key"; exit 1; }

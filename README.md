@@ -130,6 +130,17 @@ true
 > you'll need to implement that separately in your application (check out the
 > `feature/locales` branch).
 
+## Docker
+
+The `ralflorent/duration` image packages the Go CLI as a tiny static binary (~5 MB) — no Node required:
+
+```bash
+docker run --rm ralflorent/duration -m --unit=s 3600
+# => 1 hr
+```
+
+See **[docs/DOCKER.md](docs/DOCKER.md)** for all options, local builds, and publishing.
+
 ## GitHub Action
 
 Use `udlearn/duration` directly in your CI workflows to format numeric durations — no install step required:
